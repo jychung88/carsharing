@@ -17,7 +17,7 @@ public class PolicyHandler{
 
         if(!reserveCanceled.validate()) return;
 
-        System.out.println("\n\n##### listener Cancel : " + reserveCanceled.toJson() + "\n\n");
+        System.out.println("\n\n##### listener CancelPay : " + reserveCanceled.toJson() + "\n\n");
 
         String reserveId = reserveCanceled.getId().toString();
         Payment payment = paymentRepository.findByReserveId(reserveId);

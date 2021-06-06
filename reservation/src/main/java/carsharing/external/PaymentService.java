@@ -13,14 +13,12 @@ import java.util.Date;
 public interface PaymentService {
 
     @RequestMapping(method= RequestMethod.POST, path="/pay")
-    public boolean pay(
-                @RequestParam("reserveId") String reserveId,
+    public boolean pay(@RequestParam("reserveId") String reserveId,
                 @RequestParam("carId") String carId,
                 @RequestParam("amount") String amount,
                 @RequestParam("userPhone") String userPhone,
                 @RequestParam("payType") String userpayType,
                 @RequestParam("payNumber") String payNumber,
-                @RequestParam("payCompany") String payCompany
-    );
+                @RequestParam("payCompany") String payCompany);
 
 }

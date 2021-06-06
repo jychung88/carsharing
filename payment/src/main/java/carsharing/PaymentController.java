@@ -12,7 +12,7 @@ import java.util.List;
  @RestController
  public class PaymentController {
         @Autowired
-        PaymentRepository paymentRepository;         
+        PaymentRepository paymentRepository;
 
 @RequestMapping(value = "/pay",
         method = RequestMethod.POST,
@@ -20,7 +20,8 @@ import java.util.List;
 
 public boolean pay(HttpServletRequest request, HttpServletResponse response)
         throws Exception {
-                boolean ret = true;
+                boolean ret = false;
+                boolean failTest = false;
 
                 String reserveId = request.getParameter("reserveId").toString();
                 String carId = request.getParameter("carId").toString();
@@ -39,25 +40,29 @@ public boolean pay(HttpServletRequest request, HttpServletResponse response)
                 System.out.println("##### payNumber : " + payNumber);
                 System.out.println("##### payCompany : " + payCompany);
 
-                Payment payment = new Payment();
-                payment.setReserveId(reserveId);
-                payment.setCarId(carId);
-                payment.setAmount(amount);
-                payment.setUserPhone(userPhone);
-                payment.setPayType(payType);
-                payment.setPayNumber(payNumber);
-                payment.setPayCompany(payCompany);
-                                
-                payment  = paymentRepository.save(payment);
+                if (failTest == false) {
+                        Payment payment = new Payment();
+                        payment.setReserveId(reserveId);
+                        payment.setCarId(carId);
+                        payment.setAmount(amount);
+                        payment.setUserPhone(userPhone);
+                        payment.setPayType(payType);
+                        payment.setPayNumber(payNumber);
+                        payment.setPayCompany(payCompany);
+                                        
+                        payment  = paymentRepository.save(payment);
 
-                if (payment != null) {
-                        System.out.println("##### /payment/pay  save success #####");
-                        ret = true;
+                        if (payment != null) {
+                                System.out.println("##### /payment/pay  save success #####");
+                                ret = true;
+                        } else {
+                                System.out.println("##### /payment/pay  save fail #####");
+                                ret = false;
+                        }
                 } else {
-                        System.out.println("##### /payment/pay  save fail #####");
-                        ret = false;
+                        System.out.println("##### /payment/pay  fail test #####");
+                        ret = false;                        
                 }
-                
                 return ret;
         }
 

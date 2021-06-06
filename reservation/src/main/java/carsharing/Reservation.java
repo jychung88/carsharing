@@ -3,6 +3,7 @@ package carsharing;
 import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
 import java.util.List;
+import java.util.Optional;
 import java.util.Date;
 
 @Entity
@@ -20,22 +21,66 @@ public class Reservation {
     private String payType;
     private String payNumber;
     private String payCompany;
+    private String reserveStatus;
 
     @PostPersist
     public void onPostPersist(){
-        Reserved reserved = new Reserved();
-        BeanUtils.copyProperties(this, reserved);
-        reserved.publishAfterCommit();
 
         //Following code causes dependency to external APIs
         // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
 
-        //carsharing.external.Payment payment = new carsharing.external.Payment();
-        // mappings goes here
-        ////Application.applicationContext.getBean(carsharing.external.PaymentService.class)
-        //    .pay(payment);
+        String reserveId = this.getId().toString();
+        String carId = this.getCarId();
+        String amount = this.getAmount().toString();
+        String userPhone = this.getUserPhone();
+        String payType = this.getPayType();
+        String payNumber = this.getPayNumber();
+        String payCompany = this.getPayCompany();
 
+        System.out.println("##### onPostPersist  called #####");
+        System.out.println("##### reserveId : " + reserveId);
+        System.out.println("##### carId : " + carId);
+        System.out.println("##### amount : " + amount);
+        System.out.println("##### userPhone : " + userPhone);
+        System.out.println("##### payType : " + payType);
+        System.out.println("##### payNumber : " + payNumber);
+        System.out.println("##### payCompany : " + payCompany);
 
+        boolean ret = false;
+        try {
+            ret = ReservationApplication.applicationContext.getBean(carsharing.external.PaymentService.class)
+                .pay(reserveId, carId, amount, userPhone, payType, payNumber, payCompany);
+
+                System.out.println("##### /payment/pay  called result : " + ret);
+            } catch (Exception e) {
+            System.out.println("##### /payment/pay  called exception : " + e);
+        }
+
+        if (ret) {
+            Reserved reserved = new Reserved();
+            BeanUtils.copyProperties(this, reserved);
+            reserved.publishAfterCommit();
+            System.out.println("##### reservation suceess, send event  #####");    
+        } else {
+            System.out.println("##### reservation fail caused by pay fail #####");    
+        }        
+
+        Optional<Reservation> reservationOptional = ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
+            .findById(this.getId());
+
+        if (reservationOptional.isEmpty() == false) {
+            Reservation reservation = reservationOptional.get();
+
+            if (ret) {
+                reservation.setReserveStatus("Success");
+            }
+            else {
+                reservation.setReserveStatus("Fail(PayFail)");
+            }
+
+            ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
+            .save(reservation);
+        }
     }
 
     @PostUpdate
@@ -49,11 +94,13 @@ public class Reservation {
 
     @PostRemove
     public void onPostRemove(){
-        ReserveCanceled reserveCanceled = new ReserveCanceled();
-        BeanUtils.copyProperties(this, reserveCanceled);
-        reserveCanceled.publishAfterCommit();
+        String reserveStatus = this.getReserveStatus();
 
-
+        if (reserveStatus == null || "Success".equals(this.getReserveStatus())) {
+            ReserveCanceled reserveCanceled = new ReserveCanceled();
+            BeanUtils.copyProperties(this, reserveCanceled);
+            reserveCanceled.publishAfterCommit();
+        }
     }
 
 
@@ -119,6 +166,13 @@ public class Reservation {
 
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
+    }
+    public String getReserveStatus() {
+        return reserveStatus;
+    }
+
+    public void setReserveStatus(String reserveStatus) {
+        this.reserveStatus = reserveStatus;
     }
 
 
