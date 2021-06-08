@@ -15,7 +15,7 @@ spring:
         - id: rental
           uri: http://localhost:8082
           predicates:
-            - Path=/rentals/** 
+            - Path=/rentals/**, /chkAndModifyStock/**
         - id: payment
           uri: http://localhost:8083
           predicates:

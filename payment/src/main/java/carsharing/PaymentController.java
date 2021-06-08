@@ -25,7 +25,7 @@ public boolean pay(HttpServletRequest request, HttpServletResponse response)
 
                 String reserveId = request.getParameter("reserveId").toString();
                 String carId = request.getParameter("carId").toString();
-                String amount = request.getParameter("amount").toString();
+                Long amount = Long.valueOf(request.getParameter("amount"));
                 String userPhone = request.getParameter("userPhone").toString();
                 String payType = request.getParameter("payType").toString();
                 String payNumber = request.getParameter("payNumber").toString();

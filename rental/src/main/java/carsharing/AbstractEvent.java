@@ -85,7 +85,7 @@ public class AbstractEvent {
         this.timestamp = timestamp;
     }
 
-    public boolean validate(){
+    public boolean isMe(){
         return getEventType().equals(getClass().getSimpleName());
     }
 }

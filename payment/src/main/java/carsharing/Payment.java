@@ -14,7 +14,7 @@ public class Payment {
     private Long id;
     private String reserveId;
     private String carId;
-    private String amount;
+    private Long amount;
     private String userPhone;
     private String payType;
     private String payNumber;
@@ -51,11 +51,11 @@ public class Payment {
     public void setCarId(String carId) {
         this.carId = carId;
     }
-    public String getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
     public String getUserPhone() {

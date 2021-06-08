@@ -6,5 +6,6 @@ import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 @RepositoryRestResource(collectionResourceRel="rentals", path="rentals")
 public interface RentalRepository extends PagingAndSortingRepository<Rental, Long>{
 
+    Rental findByCarId(String carId);
 
 }
