@@ -31,7 +31,7 @@ public class Reservation {
 
         String reserveId = this.getId().toString();
         String carId = this.getCarId();
-        Long amount = this.getAmount();
+        String amount = this.getAmount().toString();
         String userPhone = this.getUserPhone();
         String payType = this.getPayType();
         String payNumber = this.getPayNumber();

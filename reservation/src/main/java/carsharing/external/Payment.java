@@ -5,7 +5,7 @@ public class Payment {
     private Long id;
     private String reserveId;
     private String carId;
-    private Long amount;
+    private String amount;
     private String userPhone;
     private String payType;
     private String payNumber;
@@ -29,10 +29,10 @@ public class Payment {
     public void setCarId(String carId) {
         this.carId = carId;
     }
-    public Long getAmount() {
+    public String getAmount() {
         return amount;
     }
-    public void setAmount(Long amount) {
+    public void setAmount(String amount) {
         this.amount = amount;
     }
     public String getUserPhone() {

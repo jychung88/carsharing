@@ -15,7 +15,7 @@ public interface PaymentService {
     @RequestMapping(method= RequestMethod.POST, path="/pay")
     public boolean pay(@RequestParam("reserveId") String reserveId,
                 @RequestParam("carId") String carId,
-                @RequestParam("amount") Long amount,
+                @RequestParam("amount") String amount,
                 @RequestParam("userPhone") String userPhone,
                 @RequestParam("payType") String userpayType,
                 @RequestParam("payNumber") String payNumber,
