@@ -11,27 +11,4 @@ import java.util.List;
 
  @RestController
  public class RentalController {
-    @Autowired
-    RentalRepository rentalRepository;
-
-@RequestMapping(value = "/chkAndModifyStock",
-   method = RequestMethod.GET,
-   produces = "application/json;charset=UTF-8")
-
-public boolean modifyStock(HttpServletRequest request, HttpServletResponse response)
-   throws Exception {
-           boolean status = false;
-           String carId = String.valueOf(request.getParameter("carId"));
-           int amount = Integer.parseInt(request.getParameter("amount"));
-
-           Rental rental = rentalRepository.findByCarId(carId);
-
-           if (rental.getStock() >= amount) {
-                   status = true;
-                   rental.setStock(rental.getStock() - amount);
-                   rentalRepository.save(rental);
-           }
-
-           return status;
-   }
  }

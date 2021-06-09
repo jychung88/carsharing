@@ -12,15 +12,14 @@ public class Rental {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private Long rentalId;
     private Long reserveId;
     private String carId;
     private String lentalAddr;
     private String retriveAddr;
     private String userPhone;
-    private Long amount;
     private Long stock;
-    private String reserveStatus;
+    private String rentalStatus;
+
     @PostPersist
     public void onPostPersist(){
         Rentaled rentaled = new Rentaled();
@@ -62,14 +61,6 @@ public class Rental {
     public void setreserveId(Long reserveId) {
         this.reserveId = reserveId;
     }
-
-    public Long getrentalId() {
-        return rentalId;
-    }
-
-    public void setrentalId(Long rentalId) {
-        this.rentalId = rentalId;
-    }
     public String getCarId() {
         return carId;
     }
@@ -107,20 +98,12 @@ public class Rental {
         this.stock = stock;
     }
 
-    public Long getAmount() {
-        return amount;
+    public String getRentalStatus() {
+        return rentalStatus;
     }
 
-    public void setAmount(Long amount) {
-        this.amount = amount;
-    }
-
-    public String getReserveStatus() {
-        return reserveStatus;
-    }
-
-    public void setReserveStatus(String reserveStatus) {
-        this.reserveStatus = reserveStatus;
+    public void setRentalStatus(String rentalStatus) {
+        this.rentalStatus = rentalStatus;
     }
 
 }

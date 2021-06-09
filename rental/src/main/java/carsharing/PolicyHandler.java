@@ -13,7 +13,7 @@ public class PolicyHandler{
     @Autowired RentalRepository rentalRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReserved_Lental(@Payload Reserved reserved){
+    public void wheneverReserved_Rental(@Payload Reserved reserved){
 
         // if(!reserved.validate()) return;
 
@@ -22,11 +22,12 @@ public class PolicyHandler{
         // // Sample Logic //
         // Rental rental = new Rental();
         // rentalRepository.save(rental);
-            
+        System.out.println("\n\n##### listener Reserved : " + reserved.toJson() + "\n\n");    
         if(reserved.isMe()){
 
-            Rental rental = rentalRepository.findByCarId(String.valueOf(reserved.getCarId()));
-            rental.setStock(rental.getStock() - reserved.getAmount());
+            Rental rental = new Rental();
+            rental.setreserveId(reserved.getId());
+            rental.setRentalStatus("Rentaled");
   
             rentalRepository.save(rental);
 
@@ -42,14 +43,12 @@ public class PolicyHandler{
         // // Sample Logic //
         // Rental rental = new Rental();
         // rentalRepository.save(rental);
-            
+        System.out.println("\n\n##### listener ReserveCanceled : " + reserveCanceled.toJson() + "\n\n");    
         if(reserveCanceled.isMe()){
-            System.out.println("###################### Carid" + reserveCanceled.getCarId());
-            Rental rental = rentalRepository.findByCarId(reserveCanceled.getCarId());
-            System.out.println("###################### Rental" + rental);
-            rental.setStock(rental.getStock() + reserveCanceled.getAmount());
-  
-            rentalRepository.save(rental);
+            
+            Rental rental = rentalRepository.findByReserveId(reserveCanceled.getId());
+              
+            rentalRepository.delete(rental);
 
         }
     }
@@ -63,11 +62,12 @@ public class PolicyHandler{
         // // Sample Logic //
         // Rental rental = new Rental();
         // rentalRepository.save(rental);
-            
+        System.out.println("\n\n##### listener ReserveReturned : " + reserveReturned.toJson() + "\n\n");    
         if(reserveReturned.isMe()){
 
-            Rental rental = rentalRepository.findByCarId(String.valueOf(reserveReturned.getCarId()));
-            rental.setStock(rental.getStock() + reserveReturned.getAmount());
+            Rental rental = new Rental();
+            rental.setreserveId(reserveReturned.getId());
+            rental.setRentalStatus("RetriveRentaled");
   
             rentalRepository.save(rental);
 
