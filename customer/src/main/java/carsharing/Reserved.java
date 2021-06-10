@@ -1,4 +1,3 @@
-
 package carsharing;
 
 public class Reserved extends AbstractEvent {
@@ -12,6 +11,7 @@ public class Reserved extends AbstractEvent {
     private String payType;
     private String payNumber;
     private String payCompany;
+    private String reservedate;
 
     public Long getId() {
         return id;
@@ -76,5 +76,11 @@ public class Reserved extends AbstractEvent {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
-}
+    public String getReservedate() {
+        return reservedate;
+    }
 
+    public void setReservedate(String reservedate) {
+        this.reservedate = reservedate;
+    }
+}

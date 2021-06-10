@@ -7,5 +7,6 @@ import java.util.List;
 
 public interface MyPageRepository extends CrudRepository<MyPage, Long> {
 
+    List<MyPage> findByCarId(String carId);
 
 }

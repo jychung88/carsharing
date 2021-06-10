@@ -1,4 +1,3 @@
-
 package carsharing;
 
 public class RentalCanceled extends AbstractEvent {
@@ -13,4 +12,3 @@ public class RentalCanceled extends AbstractEvent {
         this.id = id;
     }
 }
-
