@@ -1,10 +1,10 @@
 package carsharing;
 
-public class RentalCanceled extends AbstractEvent {
+public class RentalAccepted extends AbstractEvent {
 
     private Long id;
     private String reserveId;
-    private String rentCancelDate;
+    private String rentAcceptDate;
 
     public Long getId() {
         return id;
@@ -20,11 +20,11 @@ public class RentalCanceled extends AbstractEvent {
     public void setReserveId(String reserveId) {
         this.reserveId = reserveId;
     }
-    public String getRentCancelDate() {
-        return rentCancelDate;
+    public String getRentAcceptDate() {
+        return rentAcceptDate;
     }
 
-    public void setRentCancelDate(String rentCancelDate) {
-        this.rentCancelDate = rentCancelDate;
+    public void setRentAcceptDate(String rentAcceptDate) {
+        this.rentAcceptDate = rentAcceptDate;
     }
 }

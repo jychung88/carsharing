@@ -10,6 +10,7 @@ public class Payment {
     private String payType;
     private String payNumber;
     private String payCompany;
+    private String payStatus;
 
     public Long getId() {
         return id;
@@ -58,6 +59,12 @@ public class Payment {
     }
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
+    }
+    public String getPayStatus() {
+        return payStatus;
+    }
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
     }
 
 }

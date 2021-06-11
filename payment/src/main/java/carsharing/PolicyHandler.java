@@ -27,8 +27,7 @@ public class PolicyHandler{
 
             System.out.println("##### payment caused by reservation cancel #####");
             System.out.println("reserveId : " + reserveId);    
-        }
-            
+        }            
     }
 
 

@@ -32,12 +32,6 @@ public class Payment {
     }
 
 
-    @PostRemove
-    public void onPostRemove(){
-
-    }
-
-
     public Long getId() {
         return id;
     }
@@ -87,7 +81,6 @@ public class Payment {
     public void setPayNumber(String payNumber) {
         this.payNumber = payNumber;
     }
-
     public String getPayCompany() {
         return payCompany;
     }
@@ -95,7 +88,6 @@ public class Payment {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
-
     public String getPayStatus() {
         return payStatus;
     }
@@ -103,4 +95,8 @@ public class Payment {
     public void setPayStatus(String payStatus) {
         this.payStatus = payStatus;
     }
+
+
+
+
 }

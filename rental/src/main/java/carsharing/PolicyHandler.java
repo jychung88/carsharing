@@ -1,6 +1,9 @@
 package carsharing;
 
 import carsharing.config.kafka.KafkaProcessor;
+
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,65 +16,82 @@ public class PolicyHandler{
     @Autowired RentalRepository rentalRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReserved_Rental(@Payload Reserved reserved){
+    public void wheneverReserved_AcceptRental(@Payload Reserved reserved){
 
-        // if(!reserved.validate()) return;
+        if(!reserved.validate()) return;
 
-        // System.out.println("\n\n##### listener Lental : " + reserved.toJson() + "\n\n");
+        System.out.println("\n\n##### listener AcceptRental : " + reserved.toJson() + "\n\n");
 
-        // // Sample Logic //
-        // Rental rental = new Rental();
-        // rentalRepository.save(rental);
-        System.out.println("\n\n##### listener Reserved : " + reserved.toJson() + "\n\n");    
-        if(reserved.isMe()){
+        String reserveId = Long.toString(reserved.getId());
+        String carId = reserved.getCarId();
+        String rentalAddr = reserved.getRentalAddr();
+        String retrieveAddr = reserved.getRetrieveAddr();
+        String userPhone = reserved.getUserPhone();
+        Long amount = reserved.getAmount();
+        String payType = reserved.getPayType();
+        String payNumber = reserved.getPayNumber();
+        String payCompany = reserved.getPayCompany();
+        String reserveDate = reserved.getReserveDate();
 
-            Rental rental = new Rental();
-            rental.setreserveId(reserved.getId());
-            rental.setRentalStatus("Rentaled");
-  
-            rentalRepository.save(rental);
+        Rental rental = new Rental();
+        rental.setReserveId(reserveId);
+        rental.setCarId(carId);
+        rental.setRentalAddr(rentalAddr);
+        rental.setRetrieveAddr(retrieveAddr);
+        rental.setUserPhone(userPhone);
+        rental.setAmount(amount);
+        rental.setPayType(payType);
+        rental.setPayNumber(payNumber);
+        rental.setPayCompany(payCompany);
+        rental.setReserveDate(reserveDate);
+        LocalDate localDate = LocalDate.now();                
+        rental.setRentAcceptDate(localDate.toString());
+        rental.setRentalStatus("RentalAccepted");
+        rentalRepository.save(rental);           
 
-        }
+        System.out.println("##### rental accepted by reservation reserve #####");
+        System.out.println("reserveId : " + reserveId);             
     }
+    
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverReserveCanceled_CancelRental(@Payload ReserveCanceled reserveCanceled){
 
-        // if(!reserveCanceled.isMe()) return;
+        if(!reserveCanceled.validate()) return;
 
-        // System.out.println("\n\n##### listener CancelRental : " + reserveCanceled.toJson() + "\n\n");
+        System.out.println("\n\n##### listener CancelRental : " + reserveCanceled.toJson() + "\n\n");
 
-        // // Sample Logic //
-        // Rental rental = new Rental();
-        // rentalRepository.save(rental);
-        System.out.println("\n\n##### listener ReserveCanceled : " + reserveCanceled.toJson() + "\n\n");    
-        if(reserveCanceled.isMe()){
-            
-            Rental rental = rentalRepository.findByReserveId(reserveCanceled.getId());
-              
-            rentalRepository.delete(rental);
 
-        }
+        String reserveId = reserveCanceled.getId().toString();
+        Rental rental = rentalRepository.findByReserveId(reserveId);
+        if (rental != null) {
+            rental.setRentalStatus("RentalCanceled");
+            LocalDate localDate = LocalDate.now();                
+            rental.setRentCancelDate(localDate.toString());            
+            rentalRepository.save(rental); 
+
+            System.out.println("##### lental canceld by reservation cancel #####");
+            System.out.println("reserveId : " + reserveId);    
+        }            
     }
+
     @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReserveReturned_RetriveRental(@Payload ReserveReturned reserveReturned){
+    public void wheneverReserveReturned_AcceptReturn(@Payload ReserveReturned reserveReturned){
 
-        // if(!reserveReturned.isMe()) return;
+        if(!reserveReturned.validate()) return;
 
-        // System.out.println("\n\n##### listener RetriveRental : " + reserveReturned.toJson() + "\n\n");
+        System.out.println("\n\n##### listener AcceptReturn : " + reserveReturned.toJson() + "\n\n");
 
-        // // Sample Logic //
-        // Rental rental = new Rental();
-        // rentalRepository.save(rental);
-        System.out.println("\n\n##### listener ReserveReturned : " + reserveReturned.toJson() + "\n\n");    
-        if(reserveReturned.isMe()){
+        String reserveId = reserveReturned.getId().toString();
+        Rental rental = rentalRepository.findByReserveId(reserveId);
+        if (rental != null) {
+            rental.setRentalStatus("ReturnAccepted");
+            LocalDate localDate = LocalDate.now();                
+            rental.setRetAcceptDate(localDate.toString());            
+            rentalRepository.save(rental); 
 
-            Rental rental = new Rental();
-            rental.setreserveId(reserveReturned.getId());
-            rental.setRentalStatus("RetriveRentaled");
-  
-            rentalRepository.save(rental);
-
-        }
+            System.out.println("##### return accepted by reservation return #####");
+            System.out.println("reserveId : " + reserveId);    
+        }             
     }
 
 

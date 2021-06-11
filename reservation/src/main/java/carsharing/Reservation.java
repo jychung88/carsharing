@@ -3,7 +3,6 @@ package carsharing;
 import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
 import java.util.List;
-import java.util.Optional;
 import java.util.Date;
 
 @Entity
@@ -14,24 +13,17 @@ public class Reservation {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String carId;
-    private String lentalAddr;
-    private String retriveAddr;
+    private String rentalAddr;
+    private String retrieveAddr;
     private String userPhone;
     private Long amount;
     private String payType;
     private String payNumber;
     private String payCompany;
+    private String reserveDate;
+    private String cancelDate;
+    private String returnDate;
     private String reserveStatus;
-    private String reserveDate;    
-    private String cancelDate;    
-    private String returnDate; 
-
-
-    @PostPersist
-    public void onPostPersist(){
-
-    }
-
 
     @PostUpdate
     public void onPostUpdate(){
@@ -62,6 +54,10 @@ public class Reservation {
 
     }
 
+    @PrePersist
+    public void onPrePersist(){
+    }
+
 
     public Long getId() {
         return id;
@@ -77,19 +73,19 @@ public class Reservation {
     public void setCarId(String carId) {
         this.carId = carId;
     }
-    public String getLentalAddr() {
-        return lentalAddr;
+    public String getRentalAddr() {
+        return rentalAddr;
     }
 
-    public void setLentalAddr(String lentalAddr) {
-        this.lentalAddr = lentalAddr;
+    public void setRentalAddr(String rentalAddr) {
+        this.rentalAddr = rentalAddr;
     }
-    public String getRetriveAddr() {
-        return retriveAddr;
+    public String getRetrieveAddr() {
+        return retrieveAddr;
     }
 
-    public void setRetriveAddr(String retriveAddr) {
-        this.retriveAddr = retriveAddr;
+    public void setRetrieveAddr(String retrieveAddr) {
+        this.retrieveAddr = retrieveAddr;
     }
     public String getUserPhone() {
         return userPhone;
@@ -126,7 +122,27 @@ public class Reservation {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
+    public String getReserveDate() {
+        return reserveDate;
+    }
 
+    public void setReserveDate(String reserveDate) {
+        this.reserveDate = reserveDate;
+    }
+    public String getCancelDate() {
+        return cancelDate;
+    }
+
+    public void setCancelDate(String cancelDate) {
+        this.cancelDate = cancelDate;
+    }
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+    }
     public String getReserveStatus() {
         return reserveStatus;
     }
@@ -135,27 +151,7 @@ public class Reservation {
         this.reserveStatus = reserveStatus;
     }
 
-    public String getReserveDate() {
-        return reserveDate;
-    }
 
-    public void setReserveDate(String reserveDate) {
-        this.reserveDate = reserveDate;
-    }
 
-    public String getCancelDate() {
-        return cancelDate;
-    }
 
-    public void setCancelDate(String cancelDate) {
-        this.cancelDate = cancelDate;
-    }     
-
-    public String getReturnDate() {
-        return returnDate;
-    }
-
-    public void setReturnDate(String returnDate) {
-        this.returnDate = returnDate;
-    }         
 }

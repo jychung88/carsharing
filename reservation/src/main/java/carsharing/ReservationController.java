@@ -14,6 +14,7 @@ import java.util.Optional;
 
  @RestController
  public class ReservationController {
+
     @Autowired
     ReservationRepository reservationRepository;
 
@@ -47,8 +48,8 @@ import java.util.Optional;
         System.out.println("##### /reserve  called #####");
      
         String carId = request.getParameter("carId");
-        String lentalAddr = request.getParameter("lentalAddr");
-        String retriveAddr = request.getParameter("retriveAddr");
+        String rentalAddr = request.getParameter("rentalAddr");
+        String retrieveAddr = request.getParameter("retriveAddr");
         String userPhone = request.getParameter("userPhone");
         Long amount = Long.parseLong(request.getParameter("amount"));
         String reserveDate = request.getParameter("reserveDate");
@@ -65,8 +66,8 @@ import java.util.Optional;
 
         Reservation reservation = new Reservation();
         reservation.setCarId(carId);
-        reservation.setLentalAddr(lentalAddr);
-        reservation.setRetriveAddr(retriveAddr);
+        reservation.setRentalAddr(rentalAddr);
+        reservation.setRetrieveAddr(retrieveAddr);
         reservation.setUserPhone(userPhone);
         reservation.setAmount(amount);
         reservation.setReserveDate(reserveDate);
@@ -123,11 +124,19 @@ import java.util.Optional;
 
         if (reservationOptional.isEmpty() == false) {
             Reservation reservation = reservationOptional.get();
-            reservation.setCancelDate(cancelDate);
-            reservation.setReserveStatus(status);
-
-            ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
-            .save(reservation);
+            String curStatus = reservation.getReserveStatus();
+            if (curStatus == "Reserved") {
+                reservation.setCancelDate(cancelDate);
+                reservation.setReserveStatus(status);
+                ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
+                .save(reservation);
+                }
+            else {
+                status = "reserve status is not Reserved(current : " + curStatus + ")"; 
+            }
+        }
+        else{
+            status = "not found reserveId : " + reserveId; 
         }     
 
         return status;          
@@ -152,14 +161,23 @@ import java.util.Optional;
         String status = "ReserveReturned";                     
         if (reservationOptional.isEmpty() == false) {
             Reservation reservation = reservationOptional.get();
-            reservation.setReturnDate(returnDate);
-            reservation.setReserveStatus(status);
+            String curStatus = reservation.getReserveStatus();
+            if (curStatus == "Reserved") {            
+                reservation.setReturnDate(returnDate);
+                reservation.setReserveStatus(status);
 
-            ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
-            .save(reservation);
+                ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
+                .save(reservation);
+            }
+            else {
+                status = "reserve status is not Reserved(current : " + curStatus + ")"; 
+            }            
         }   
+        else{
+            status = "not found reserveId : " + reserveId; 
+        } 
 
         return status;                         
     }   
-    
- }
+}
+

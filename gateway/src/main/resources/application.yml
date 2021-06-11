@@ -1,5 +1,5 @@
 server:
-  port: 8088  # 게이트웨이 포트 확인
+  port: 8088
 
 ---
 
@@ -15,11 +15,11 @@ spring:
         - id: rental
           uri: http://localhost:8082
           predicates:
-            - Path=/rentals/** 
+            - Path=/rentals/**,  /rentaled/**, /retrieved/**, /rental_action**, /retrieve_action**
         - id: payment
           uri: http://localhost:8083
           predicates:
-            - Path=/payments/**, /pay/**  # 동기식 호출 url 추가(/pay) 
+            - Path=/payments/**, /pay/**   # 동기식 호출 url 추가(/pay) 
         - id: customer
           uri: http://localhost:8084
           predicates:
@@ -54,11 +54,11 @@ spring:
         - id: payment
           uri: http://payment:8080
           predicates:
-            - Path=/payments/**, /pay/**   # 동기식 호출 url 추가(/pay) 
+            - Path=/payments/** 
         - id: customer
           uri: http://customer:8080
           predicates:
-            - Path=/customers/**, /myPages/**  # , 추가 두개 이상일 경우 콤마로 구분
+            - Path=/customers/** /myPages/**
       globalcors:
         corsConfigurations:
           '[/**]':

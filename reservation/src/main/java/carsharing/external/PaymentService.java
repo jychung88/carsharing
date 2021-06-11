@@ -12,7 +12,7 @@ import java.util.Date;
 @FeignClient(name="payment", url="http://localhost:8083")
 public interface PaymentService {
 
-    @RequestMapping(method= RequestMethod.POST, path="/pay")
+    @RequestMapping(method= RequestMethod.POST, path="/pay")        
     public boolean pay(@RequestParam("reserveId") String reserveId,
                 @RequestParam("carId") String carId,
                 @RequestParam("amount") String amount,

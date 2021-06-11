@@ -12,40 +12,59 @@ public class Rental {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private Long reserveId;
+    private String reserveId;
     private String carId;
-    private String lentalAddr;
-    private String retriveAddr;
+    private String rentalAddr;
+    private String retrieveAddr;
     private String userPhone;
-    private Long stock;
+    private Long amount;
+    private String payType;
+    private String payNumber;
+    private String payCompany;
+    private String reserveDate;
+    private String resrvCancelDate;
+    private String resrvReturnDate;
+    private String rentAcceptDate;
+    private String rentalDate;
+    private String rentCancelDate;
+    private String retAcceptDate;
+    private String rentRetrieveDate;
     private String rentalStatus;
 
     @PostPersist
     public void onPostPersist(){
-        Rentaled rentaled = new Rentaled();
-        BeanUtils.copyProperties(this, rentaled);
-        rentaled.publishAfterCommit();
+        if (this.getRentalStatus() == "RentalAccepted") {        
+            RentalAccepted rentalAccepted = new RentalAccepted();
+            BeanUtils.copyProperties(this, rentalAccepted);
+            rentalAccepted.publishAfterCommit();
+        }
     }
 
     @PostUpdate
     public void onPostUpdate(){
-        RentalRetrieved rentalRetrieved = new RentalRetrieved();
-        BeanUtils.copyProperties(this, rentalRetrieved);
-        rentalRetrieved.publishAfterCommit();
-
-
+        if (this.getRentalStatus() == "Rentaled") {        
+            Rentaled rentaled = new Rentaled();
+            BeanUtils.copyProperties(this, rentaled);
+            rentaled.publishAfterCommit();
+        }
+        else if (this.getRentalStatus() == "RentalCanceled") {        
+            RentalCanceled rentalCanceled = new RentalCanceled();
+            BeanUtils.copyProperties(this, rentalCanceled);
+            rentalCanceled.publishAfterCommit(); 
+        }
+        else if (this.getRentalStatus() == "RentalRetrieved") {  
+            RentalRetrieved rentalRetrieved = new RentalRetrieved();
+            BeanUtils.copyProperties(this, rentalRetrieved);
+            rentalRetrieved.publishAfterCommit();
+        }
+        else if (this.getRentalStatus() == "ReturnAccepted") {  
+            ReturnAccepted returnAccepted = new ReturnAccepted();
+            BeanUtils.copyProperties(this, returnAccepted);
+            returnAccepted.publishAfterCommit();
+        }
     }
 
-    @PostRemove
-    public void onPostRemove(){
-        RentalCanceled rentalCanceled = new RentalCanceled();
-        BeanUtils.copyProperties(this, rentalCanceled);
-        rentalCanceled.publishAfterCommit();
 
-
-    }
-    
-    
     public Long getId() {
         return id;
     }
@@ -53,12 +72,11 @@ public class Rental {
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Long getreserveId() {
+    public String getReserveId() {
         return reserveId;
     }
 
-    public void setreserveId(Long reserveId) {
+    public void setReserveId(String reserveId) {
         this.reserveId = reserveId;
     }
     public String getCarId() {
@@ -68,19 +86,19 @@ public class Rental {
     public void setCarId(String carId) {
         this.carId = carId;
     }
-    public String getLentalAddr() {
-        return lentalAddr;
+    public String getRentalAddr() {
+        return rentalAddr;
     }
 
-    public void setLentalAddr(String lentalAddr) {
-        this.lentalAddr = lentalAddr;
+    public void setRentalAddr(String rentalAddr) {
+        this.rentalAddr = rentalAddr;
     }
-    public String getRetriveAddr() {
-        return retriveAddr;
+    public String getRetrieveAddr() {
+        return retrieveAddr;
     }
 
-    public void setRetriveAddr(String retriveAddr) {
-        this.retriveAddr = retriveAddr;
+    public void setRetrieveAddr(String retriveAddr) {
+        this.retrieveAddr = retriveAddr;
     }
     public String getUserPhone() {
         return userPhone;
@@ -89,15 +107,90 @@ public class Rental {
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
     }
-
-    public Long getStock() {
-        return stock;
+    public Long getAmount() {
+        return amount;
     }
 
-    public void setStock(Long stock) {
-        this.stock = stock;
+    public void setAmount(Long amount) {
+        this.amount = amount;
+    }
+    public String getPayType() {
+        return payType;
     }
 
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+    public String getPayNumber() {
+        return payNumber;
+    }
+
+    public void setPayNumber(String payNumber) {
+        this.payNumber = payNumber;
+    }
+    public String getPayCompany() {
+        return payCompany;
+    }
+
+    public void setPayCompany(String payCompany) {
+        this.payCompany = payCompany;
+    }
+    public String getReserveDate() {
+        return reserveDate;
+    }
+
+    public void setReserveDate(String reserveDate) {
+        this.reserveDate = reserveDate;
+    }
+    public String getResrvCancelDate() {
+        return resrvCancelDate;
+    }
+
+    public void setResrvCancelDate(String resrvCancelDate) {
+        this.resrvCancelDate = resrvCancelDate;
+    }
+    public String getResrvReturnDate() {
+        return resrvReturnDate;
+    }
+
+    public void setResrvReturnDate(String resrvReturnDate) {
+        this.resrvReturnDate = resrvReturnDate;
+    }
+    public String getRentAcceptDate() {
+        return rentAcceptDate;
+    }
+
+    public void setRentAcceptDate(String rentAcceptDate) {
+        this.rentAcceptDate = rentAcceptDate;
+    }
+    public String getRentalDate() {
+        return rentalDate;
+    }
+
+    public void setRentalDate(String rentalDate) {
+        this.rentalDate = rentalDate;
+    }
+    public String getRentCancelDate() {
+        return rentCancelDate;
+    }
+
+    public void setRentCancelDate(String rentCancelDate) {
+        this.rentCancelDate = rentCancelDate;
+    }
+    public String getRetAcceptDate() {
+        return retAcceptDate;
+    }
+
+    public void setRetAcceptDate(String retAcceptDate) {
+        this.retAcceptDate = retAcceptDate;
+    }
+    public String getRentRetrieveDate() {
+        return rentRetrieveDate;
+    }
+
+    public void setRentRetrieveDate(String rentRetrieveDate) {
+        this.rentRetrieveDate = rentRetrieveDate;
+    }
     public String getRentalStatus() {
         return rentalStatus;
     }
@@ -105,5 +198,8 @@ public class Rental {
     public void setRentalStatus(String rentalStatus) {
         this.rentalStatus = rentalStatus;
     }
+
+
+
 
 }

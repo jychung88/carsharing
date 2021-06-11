@@ -1,12 +1,11 @@
-
 package carsharing;
 
 public class Reserved extends AbstractEvent {
 
     private Long id;
     private String carId;
-    private String lentalAddr;
-    private String retriveAddr;
+    private String rentalAddr;
+    private String retrieveAddr;
     private String userPhone;
     private Long amount;
     private String payType;
@@ -28,19 +27,19 @@ public class Reserved extends AbstractEvent {
     public void setCarId(String carId) {
         this.carId = carId;
     }
-    public String getLentalAddr() {
-        return lentalAddr;
+    public String getRentalAddr() {
+        return rentalAddr;
     }
 
-    public void setLentalAddr(String lentalAddr) {
-        this.lentalAddr = lentalAddr;
+    public void setRentalAddr(String rentalAddr) {
+        this.rentalAddr = rentalAddr;
     }
-    public String getRetriveAddr() {
-        return retriveAddr;
+    public String getRetrieveAddr() {
+        return retrieveAddr;
     }
 
-    public void setRetriveAddr(String retriveAddr) {
-        this.retriveAddr = retriveAddr;
+    public void setRetrieveAddr(String retrieveAddr) {
+        this.retrieveAddr = retrieveAddr;
     }
     public String getUserPhone() {
         return userPhone;
@@ -77,13 +76,11 @@ public class Reserved extends AbstractEvent {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
-
     public String getReserveDate() {
         return reserveDate;
     }
 
     public void setReserveDate(String reserveDate) {
         this.reserveDate = reserveDate;
-    }    
+    }
 }
-
