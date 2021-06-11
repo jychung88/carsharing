@@ -12,6 +12,7 @@ public class Reserved extends AbstractEvent {
     private String payType;
     private String payNumber;
     private String payCompany;
+    private String reserveDate;
 
     public Long getId() {
         return id;
@@ -76,5 +77,13 @@ public class Reserved extends AbstractEvent {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
+
+    public String getReserveDate() {
+        return reserveDate;
+    }
+
+    public void setReserveDate(String reserveDate) {
+        this.reserveDate = reserveDate;
+    }    
 }
 

@@ -22,85 +22,44 @@ public class Reservation {
     private String payNumber;
     private String payCompany;
     private String reserveStatus;
+    private String reserveDate;    
+    private String cancelDate;    
+    private String returnDate; 
+
 
     @PostPersist
     public void onPostPersist(){
 
-        //Following code causes dependency to external APIs
-        // it is NOT A GOOD PRACTICE. instead, Event-Policy mapping is recommended.
-
-        String reserveId = this.getId().toString();
-        String carId = this.getCarId();
-        String amount = this.getAmount().toString();
-        String userPhone = this.getUserPhone();
-        String payType = this.getPayType();
-        String payNumber = this.getPayNumber();
-        String payCompany = this.getPayCompany();
-
-        System.out.println("##### onPostPersist  called #####");
-        System.out.println("##### reserveId : " + reserveId);
-        System.out.println("##### carId : " + carId);
-        System.out.println("##### amount : " + amount);
-        System.out.println("##### userPhone : " + userPhone);
-        System.out.println("##### payType : " + payType);
-        System.out.println("##### payNumber : " + payNumber);
-        System.out.println("##### payCompany : " + payCompany);
-
-        boolean ret = false;
-        try {
-            ret = ReservationApplication.applicationContext.getBean(carsharing.external.PaymentService.class)
-                .pay(reserveId, carId, amount, userPhone, payType, payNumber, payCompany);
-
-                System.out.println("##### /payment/pay  called result : " + ret);
-            } catch (Exception e) {
-            System.out.println("##### /payment/pay  called exception : " + e);
-        }
-
-        if (ret) {
-            Reserved reserved = new Reserved();
-            BeanUtils.copyProperties(this, reserved);
-            reserved.publishAfterCommit();
-            System.out.println("##### reservation suceess, send event  #####");    
-        } else {
-            System.out.println("##### reservation fail caused by pay fail #####");    
-        }        
-
-        Optional<Reservation> reservationOptional = ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
-            .findById(this.getId());
-
-        if (reservationOptional.isEmpty() == false) {
-            Reservation reservation = reservationOptional.get();
-
-            if (ret) {
-                reservation.setReserveStatus("Success");
-            }
-            else {
-                reservation.setReserveStatus("Fail(PayFail)");
-            }
-
-            ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
-            .save(reservation);
-        }
     }
+
 
     @PostUpdate
     public void onPostUpdate(){
-        ReserveReturned reserveReturned = new ReserveReturned();
-        BeanUtils.copyProperties(this, reserveReturned);
-        reserveReturned.publishAfterCommit();
-
-
+        if (this.getReserveStatus() == "Reserved")
+        {
+            Reserved reserved = new Reserved();
+            BeanUtils.copyProperties(this, reserved);
+            reserved.publishAfterCommit();
+            System.out.println("##### send event : Reserved  #####");   
+        } 
+        else if (this.getReserveStatus() == "ReserveCanceled")
+        {
+            ReserveCanceled reserveCanceled = new ReserveCanceled();
+            BeanUtils.copyProperties(this, reserveCanceled);
+            reserveCanceled.publishAfterCommit();
+        }               
+        else if (this.getReserveStatus() == "ReserveReturned")
+        {
+            ReserveReturned reserveReturned = new ReserveReturned();
+            BeanUtils.copyProperties(this, reserveReturned);
+            reserveReturned.publishAfterCommit();
+            System.out.println("##### send event : ReserveReturned  #####");  
+        }             
     }
 
     @PostRemove
     public void onPostRemove(){
-        String reserveStatus = this.getReserveStatus();
 
-        if (reserveStatus == null || "Success".equals(this.getReserveStatus())) {
-            ReserveCanceled reserveCanceled = new ReserveCanceled();
-            BeanUtils.copyProperties(this, reserveCanceled);
-            reserveCanceled.publishAfterCommit();
-        }
     }
 
 
@@ -167,6 +126,7 @@ public class Reservation {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
+
     public String getReserveStatus() {
         return reserveStatus;
     }
@@ -175,7 +135,27 @@ public class Reservation {
         this.reserveStatus = reserveStatus;
     }
 
+    public String getReserveDate() {
+        return reserveDate;
+    }
 
+    public void setReserveDate(String reserveDate) {
+        this.reserveDate = reserveDate;
+    }
 
+    public String getCancelDate() {
+        return cancelDate;
+    }
 
+    public void setCancelDate(String cancelDate) {
+        this.cancelDate = cancelDate;
+    }     
+
+    public String getReturnDate() {
+        return returnDate;
+    }
+
+    public void setReturnDate(String returnDate) {
+        this.returnDate = returnDate;
+    }         
 }

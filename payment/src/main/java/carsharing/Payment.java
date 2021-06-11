@@ -19,13 +19,21 @@ public class Payment {
     private String payType;
     private String payNumber;
     private String payCompany;
+    private String payStatus;
+
+    @PostUpdate
+    public void onPostUpdate(){
+        if (this.getPayStatus() == "PayCanled")
+        {
+            PayCanceled payCanceled = new PayCanceled();
+            BeanUtils.copyProperties(this, payCanceled);
+            payCanceled.publishAfterCommit();
+        }                           
+    }
+
 
     @PostRemove
     public void onPostRemove(){
-        PayCanceled payCanceled = new PayCanceled();
-        BeanUtils.copyProperties(this, payCanceled);
-        payCanceled.publishAfterCommit();
-
 
     }
 
@@ -79,6 +87,7 @@ public class Payment {
     public void setPayNumber(String payNumber) {
         this.payNumber = payNumber;
     }
+
     public String getPayCompany() {
         return payCompany;
     }
@@ -87,7 +96,11 @@ public class Payment {
         this.payCompany = payCompany;
     }
 
+    public String getPayStatus() {
+        return payStatus;
+    }
 
-
-
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
 }

@@ -22,9 +22,10 @@ public class PolicyHandler{
         String reserveId = reserveCanceled.getId().toString();
         Payment payment = paymentRepository.findByReserveId(reserveId);
         if (payment != null) {
-            paymentRepository.delete(payment); 
+            payment.setPayStatus("PayCanled");
+            paymentRepository.save(payment); 
 
-            System.out.println("##### delete payment caused by reservation cancel #####");
+            System.out.println("##### payment caused by reservation cancel #####");
             System.out.println("reserveId : " + reserveId);    
         }
             

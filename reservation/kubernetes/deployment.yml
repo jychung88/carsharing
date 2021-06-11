@@ -19,6 +19,17 @@ spec:
           image: username/reservation:latest
           ports:
             - containerPort: 8080
+        env:
+          - name: DB_IP
+            valueFrom:
+              configMapKeyRef:
+                 name: cm-carsharing
+                 key: DB_IP
+          - name: DB_SERVICE_NAME
+            valueFrom:
+              configMapKeyRef:
+                 name: cm-carsharing
+                 key: DB_SERVICE_NAME            
           readinessProbe:
             httpGet:
               path: '/actuator/health'

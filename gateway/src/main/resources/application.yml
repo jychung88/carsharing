@@ -1,5 +1,5 @@
 server:
-  port: 8088
+  port: 8088  # 게이트웨이 포트 확인
 
 ---
 
@@ -11,7 +11,7 @@ spring:
         - id: reservation
           uri: http://localhost:8081
           predicates:
-            - Path=/reservations/** 
+            - Path=/reservations/**, /env/**, /reserve/**, /cancel/**, /resreturn/**, /reserve**, /cancel**, /return**  # configMap 환경변수 확인, 예약, 취소, 반납 ui 추가 
         - id: rental
           uri: http://localhost:8082
           predicates:
@@ -19,11 +19,11 @@ spring:
         - id: payment
           uri: http://localhost:8083
           predicates:
-            - Path=/payments/** 
+            - Path=/payments/**, /pay/**  # 동기식 호출 url 추가(/pay) 
         - id: customer
           uri: http://localhost:8084
           predicates:
-            - Path=/customers/** /myPages/**
+            - Path=/customers/**, /myPages/** # , 추가 두개 이상일 경우 콤마로 구분
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -54,11 +54,11 @@ spring:
         - id: payment
           uri: http://payment:8080
           predicates:
-            - Path=/payments/** 
+            - Path=/payments/**, /pay/**   # 동기식 호출 url 추가(/pay) 
         - id: customer
           uri: http://customer:8080
           predicates:
-            - Path=/customers/** /myPages/**
+            - Path=/customers/**, /myPages/**  # , 추가 두개 이상일 경우 콤마로 구분
       globalcors:
         corsConfigurations:
           '[/**]':
