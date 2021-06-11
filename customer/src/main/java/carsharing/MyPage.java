@@ -11,7 +11,7 @@ public class MyPage {
         @GeneratedValue(strategy=GenerationType.AUTO)
         private Long id;
         private String reserveId;
-        private String amount;
+        private Long amount;
         private String reserveDate;
         private String lentalAddr;
         private String retriveAddr;
@@ -19,7 +19,6 @@ public class MyPage {
         private String status;
         private String cancelDate;
         private String returnDate;
-
 
         public Long getId() {
             return id;
@@ -35,11 +34,11 @@ public class MyPage {
         public void setReserveId(String reserveId) {
             this.reserveId = reserveId;
         }
-        public String getAmount() {
+        public Long getAmount() {
             return amount;
         }
 
-        public void setAmount(String amount) {
+        public void setAmount(Long amount) {
             this.amount = amount;
         }
         public String getReserveDate() {

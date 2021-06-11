@@ -13,7 +13,7 @@ public class Customer {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
     private String reserveid;
-    private String amount;
+    private Long amount;
     private String lentalAddr;
     private String retriveAddr;
     private String carid;
@@ -46,11 +46,11 @@ public class Customer {
     public void setReserveid(String reserveid) {
         this.reserveid = reserveid;
     }
-    public String getAmount() {
+    public Long getAmount() {
         return amount;
     }
 
-    public void setAmount(String amount) {
+    public void setAmount(Long amount) {
         this.amount = amount;
     }
     public String getLentalAddr() {

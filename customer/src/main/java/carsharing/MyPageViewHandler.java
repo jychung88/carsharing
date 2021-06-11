@@ -54,7 +54,7 @@ public class MyPageViewHandler {
                 myPage.setLentalAddr(reserved.getLentalAddr());
                 myPage.setRetriveAddr(reserved.getRetriveAddr());
                 myPage.setAmount(reserved.getAmount());
-                myPage.setReservestatus("예약");
+                myPage.setStatus("예약");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
@@ -66,7 +66,7 @@ public class MyPageViewHandler {
                     myPage.setLentalAddr(reserved.getLentalAddr());
                     myPage.setRetriveAddr(reserved.getRetriveAddr());
                     myPage.setAmount(reserved.getAmount());
-                    myPage.setReservestatus("예약");
+                    myPage.setStatus("예약");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
@@ -84,8 +84,8 @@ public class MyPageViewHandler {
             if( myPageOptional.isPresent()) {
                 MyPage myPage = myPageOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                    myPage.setRetrunDate(reserveReturned.getReturnDate());
-                    myPage.setReservestatus("반납");
+                    myPage.setReturnDate(reserveReturned.getReturnDate());
+                    myPage.setStatus("반납");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
@@ -103,7 +103,7 @@ public class MyPageViewHandler {
             if( myPageOptional.isPresent()) {
                 MyPage myPage = myPageOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                    myPage.setReservestatus("대여");
+                    myPage.setStatus("대여");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
@@ -121,7 +121,7 @@ public class MyPageViewHandler {
             if( myPageOptional.isPresent()) {
                 MyPage myPage = myPageOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                    myPage.setReservestatus("대여취소");
+                    myPage.setStatus("대여취소");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
@@ -139,7 +139,7 @@ public class MyPageViewHandler {
             if( myPageOptional.isPresent()) {
                 MyPage myPage = myPageOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                    myPage.setReservestatus("대여반납");
+                    myPage.setStatus("대여반납");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
@@ -157,7 +157,7 @@ public class MyPageViewHandler {
             if( myPageOptional.isPresent()) {
                 MyPage myPage = myPageOptional.get();
                 // view 객체에 이벤트의 eventDirectValue 를 set 함
-                    myPage.setReservestatus("예약취소");
+                    myPage.setStatus("예약취소");
                 // view 레파지 토리에 save
                 myPageRepository.save(myPage);
             }
