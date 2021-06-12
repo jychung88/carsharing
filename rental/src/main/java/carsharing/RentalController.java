@@ -33,7 +33,7 @@ import java.util.Optional;
         if (rentalOptional.isEmpty() == false) {
             Rental rental = rentalOptional.get();
             String curStatus = rental.getRentalStatus();            
-            if (curStatus == "RentalAccepted") {            
+            if ("RentalAccepted".equals(curStatus)) {            
                 rental.setRentalDate(rentalDate);
                 rental.setRentalStatus(status);
 
@@ -71,7 +71,7 @@ import java.util.Optional;
         if (rentalOptional.isEmpty() == false) {
             Rental rental = rentalOptional.get();
             String curStatus = rental.getRentalStatus();            
-            if (curStatus == "ReturnAccepted") {              
+            if ("ReturnAccepted".equals(curStatus)) {              
                 rental.setRentRetrieveDate(retrieveDate);
                 rental.setRentalStatus(status);
 

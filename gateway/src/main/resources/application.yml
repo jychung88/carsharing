@@ -23,7 +23,7 @@ spring:
         - id: customer
           uri: http://localhost:8084
           predicates:
-            - Path=/customers/**, /myPages/** # , 추가 두개 이상일 경우 콤마로 구분
+            - Path=/customers/**, /myPages/**, /mypage** # , 추가 두개 이상일 경우 콤마로 구분
       globalcors:
         corsConfigurations:
           '[/**]':
@@ -46,19 +46,19 @@ spring:
         - id: reservation
           uri: http://reservation:8080
           predicates:
-            - Path=/reservations/** 
+            - Path=/reservations/**, /env/**, /reserve/**, /cancel/**, /resreturn/**, /reserve**, /cancel**, /return**  # configMap 환경변수 확인, 예약, 취소, 반납 ui 추가 
         - id: rental
           uri: http://rental:8080
           predicates:
-            - Path=/rentals/** 
+            - Path=/rentals/**,  /rentaled/**, /retrieved/**, /rental_action**, /retrieve_action**
         - id: payment
           uri: http://payment:8080
           predicates:
-            - Path=/payments/** 
+            - Path=/payments/**, /pay/**   # 동기식 호출 url 추가(/pay) 
         - id: customer
           uri: http://customer:8080
           predicates:
-            - Path=/customers/** /myPages/**
+            - Path=/customers/**, /myPages/**, /mypage** # , 추가 두개 이상일 경우 콤마로 구분
       globalcors:
         corsConfigurations:
           '[/**]':

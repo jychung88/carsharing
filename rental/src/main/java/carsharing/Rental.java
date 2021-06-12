@@ -33,7 +33,7 @@ public class Rental {
 
     @PostPersist
     public void onPostPersist(){
-        if (this.getRentalStatus() == "RentalAccepted") {        
+        if ("RentalAccepted".equals(this.getRentalStatus())) {        
             RentalAccepted rentalAccepted = new RentalAccepted();
             BeanUtils.copyProperties(this, rentalAccepted);
             rentalAccepted.publishAfterCommit();
@@ -42,22 +42,22 @@ public class Rental {
 
     @PostUpdate
     public void onPostUpdate(){
-        if (this.getRentalStatus() == "Rentaled") {        
+        if ("Rentaled".equals(this.getRentalStatus())) {        
             Rentaled rentaled = new Rentaled();
             BeanUtils.copyProperties(this, rentaled);
             rentaled.publishAfterCommit();
         }
-        else if (this.getRentalStatus() == "RentalCanceled") {        
+        else if ("RentalCanceled".equals(this.getRentalStatus())) {        
             RentalCanceled rentalCanceled = new RentalCanceled();
             BeanUtils.copyProperties(this, rentalCanceled);
             rentalCanceled.publishAfterCommit(); 
         }
-        else if (this.getRentalStatus() == "RentalRetrieved") {  
+        else if ("RentalRetrieved".equals(this.getRentalStatus())) {  
             RentalRetrieved rentalRetrieved = new RentalRetrieved();
             BeanUtils.copyProperties(this, rentalRetrieved);
             rentalRetrieved.publishAfterCommit();
         }
-        else if (this.getRentalStatus() == "ReturnAccepted") {  
+        else if ("ReturnAccepted".equals(this.getRentalStatus())) {  
             ReturnAccepted returnAccepted = new ReturnAccepted();
             BeanUtils.copyProperties(this, returnAccepted);
             returnAccepted.publishAfterCommit();

@@ -4,14 +4,14 @@ public class Reserved extends AbstractEvent {
 
     private Long id;
     private String carId;
-    private String lentalAddr;
-    private String retriveAddr;
+    private String rentalAddr;
+    private String retrieveAddr;
     private String userPhone;
     private Long amount;
     private String payType;
     private String payNumber;
     private String payCompany;
-    private String reservedate;
+    private String reserveDate;
 
     public Long getId() {
         return id;
@@ -27,19 +27,19 @@ public class Reserved extends AbstractEvent {
     public void setCarId(String carId) {
         this.carId = carId;
     }
-    public String getLentalAddr() {
-        return lentalAddr;
+    public String getRentalAddr() {
+        return rentalAddr;
     }
 
-    public void setLentalAddr(String lentalAddr) {
-        this.lentalAddr = lentalAddr;
+    public void setRentalAddr(String rentalAddr) {
+        this.rentalAddr = rentalAddr;
     }
-    public String getRetriveAddr() {
-        return retriveAddr;
+    public String getRetrieveAddr() {
+        return retrieveAddr;
     }
 
-    public void setRetriveAddr(String retriveAddr) {
-        this.retriveAddr = retriveAddr;
+    public void setRetrieveAddr(String retrieveAddr) {
+        this.retrieveAddr = retrieveAddr;
     }
     public String getUserPhone() {
         return userPhone;
@@ -76,11 +76,11 @@ public class Reserved extends AbstractEvent {
     public void setPayCompany(String payCompany) {
         this.payCompany = payCompany;
     }
-    public String getReservedate() {
-        return reservedate;
+    public String getReserveDate() {
+        return reserveDate;
     }
 
-    public void setReservedate(String reservedate) {
-        this.reservedate = reservedate;
+    public void setReserveDate(String reserveDate) {
+        this.reserveDate = reserveDate;
     }
 }

@@ -71,7 +71,10 @@ public class PolicyHandler{
 
             System.out.println("##### lental canceld by reservation cancel #####");
             System.out.println("reserveId : " + reserveId);    
-        }            
+        }
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        }                   
     }
 
     @StreamListener(KafkaProcessor.INPUT)
@@ -92,7 +95,10 @@ public class PolicyHandler{
             System.out.println("##### return accepted by reservation return #####");
             System.out.println("reserveId : " + reserveId);    
         }             
-    }
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        }                   
+   }
 
 
     @StreamListener(KafkaProcessor.INPUT)

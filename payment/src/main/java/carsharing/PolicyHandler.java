@@ -1,6 +1,9 @@
 package carsharing;
 
 import carsharing.config.kafka.KafkaProcessor;
+
+import java.time.LocalDate;
+
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +26,8 @@ public class PolicyHandler{
         Payment payment = paymentRepository.findByReserveId(reserveId);
         if (payment != null) {
             payment.setPayStatus("PayCanled");
+            LocalDate localDate = LocalDate.now();                
+            payment.setPayCancelDate(localDate.toString());              
             paymentRepository.save(payment); 
 
             System.out.println("##### payment caused by reservation cancel #####");

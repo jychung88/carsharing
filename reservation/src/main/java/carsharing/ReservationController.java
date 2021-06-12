@@ -125,7 +125,7 @@ import java.util.Optional;
         if (reservationOptional.isEmpty() == false) {
             Reservation reservation = reservationOptional.get();
             String curStatus = reservation.getReserveStatus();
-            if (curStatus == "Reserved") {
+            if ("Reserved".equals(curStatus)) {
                 reservation.setCancelDate(cancelDate);
                 reservation.setReserveStatus(status);
                 ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
@@ -162,7 +162,7 @@ import java.util.Optional;
         if (reservationOptional.isEmpty() == false) {
             Reservation reservation = reservationOptional.get();
             String curStatus = reservation.getReserveStatus();
-            if (curStatus == "Reserved") {            
+            if ("Reserved".equals(curStatus)) {            
                 reservation.setReturnDate(returnDate);
                 reservation.setReserveStatus(status);
 

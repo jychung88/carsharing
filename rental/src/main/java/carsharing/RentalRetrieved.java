@@ -4,7 +4,7 @@ public class RentalRetrieved extends AbstractEvent {
 
     private Long id;
     private String reserveId;
-    private String rentRetriveDate;
+    private String rentRetrieveDate;
 
     public Long getId() {
         return id;
@@ -20,11 +20,11 @@ public class RentalRetrieved extends AbstractEvent {
     public void setReserveId(String reserveId) {
         this.reserveId = reserveId;
     }
-    public String getRentRetriveDate() {
-        return rentRetriveDate;
+    public String getRentRetrieveDate() {
+        return rentRetrieveDate;
     }
 
-    public void setRentRetriveDate(String rentRetriveDate) {
-        this.rentRetriveDate = rentRetriveDate;
+    public void setRentRetrieveDate(String rentRetrieveDate) {
+        this.rentRetrieveDate = rentRetrieveDate;
     }
 }

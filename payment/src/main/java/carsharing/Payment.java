@@ -20,10 +20,12 @@ public class Payment {
     private String payNumber;
     private String payCompany;
     private String payStatus;
+    private String payCancelDate;
+
 
     @PostUpdate
     public void onPostUpdate(){
-        if (this.getPayStatus() == "PayCanled")
+        if ("PayCanled".equals(this.getPayStatus()))
         {
             PayCanceled payCanceled = new PayCanceled();
             BeanUtils.copyProperties(this, payCanceled);
@@ -96,7 +98,13 @@ public class Payment {
         this.payStatus = payStatus;
     }
 
+    public String getPayCancelDate() {
+        return payCancelDate;
+    }
 
+    public void setPayCancelDate(String payCancelDate) {
+        this.payCancelDate = payCancelDate;
+    }  
 
 
 }

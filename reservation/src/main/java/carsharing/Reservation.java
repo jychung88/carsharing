@@ -27,20 +27,20 @@ public class Reservation {
 
     @PostUpdate
     public void onPostUpdate(){
-        if (this.getReserveStatus() == "Reserved")
+        if ("Reserved".equals(this.getReserveStatus()))
         {
             Reserved reserved = new Reserved();
             BeanUtils.copyProperties(this, reserved);
             reserved.publishAfterCommit();
             System.out.println("##### send event : Reserved  #####");   
         } 
-        else if (this.getReserveStatus() == "ReserveCanceled")
+        else if ("ReserveCanceled".equals(this.getReserveStatus()))
         {
             ReserveCanceled reserveCanceled = new ReserveCanceled();
             BeanUtils.copyProperties(this, reserveCanceled);
             reserveCanceled.publishAfterCommit();
         }               
-        else if (this.getReserveStatus() == "ReserveReturned")
+        else if ("ReserveReturned".equals(this.getReserveStatus()) )
         {
             ReserveReturned reserveReturned = new ReserveReturned();
             BeanUtils.copyProperties(this, reserveReturned);
