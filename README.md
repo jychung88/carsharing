@@ -367,7 +367,7 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 
 ```
 - 적용 후 REST API 의 테스트 : 이미지로 교체
-```
+
 # reservation 서비스의 예약처리
 http://localhost:8081/reserve_action.html
 ![image](https://user-images.githubusercontent.com/84000909/121796226-8bd04980-cc52-11eb-82c0-70d5b8d79f7c.png)
@@ -401,7 +401,7 @@ localhost:8084/mypage_action.html
 ![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
 --http localhost:8081/orders/1
 
-```
+
 
 
 ## 폴리글랏 퍼시스턴스 : ????
