@@ -234,7 +234,7 @@ cd reservation
 mvn spring-boot:run 
 ```
 
-## DDD 의 적용 - 여기부터 수정해야 함
+## DDD 의 적용
 
 - 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 pay 마이크로 서비스). 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력했다. 하지만, 일부 구현에 있어서 영문이 아닌 경우는 실행이 불가능한 경우가 있기 때문에 계속 사용할 방법은 아닌것 같다. (Maven pom.xml, Kafka의 topic id, FeignClient 의 서비스 id 등은 한글로 식별자를 사용하는 경우 오류가 발생하는 것을 확인하였다)
 
@@ -367,41 +367,50 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 
 ```
 - 적용 후 REST API 의 테스트 : 이미지로 교체
-'''
-# reservation 서비스의 예약처리
+
+reservation 서비스의 예약처리
 http://localhost:8081/reserve_action.html
+
 ![image](https://user-images.githubusercontent.com/84000909/121796226-8bd04980-cc52-11eb-82c0-70d5b8d79f7c.png)
 
 --http localhost:8081/orders item="통닭"
 
-# rental 서비스의 대여처리
+rental 서비스의 대여처리
 http://localhost:8082/rental_action.html
+
 ![image](https://user-images.githubusercontent.com/84000909/121796234-9db1ec80-cc52-11eb-8275-a2dcb79d60a1.png)
 
 --http localhost:8083/주문처리s orderId=1
 
-# reservation 서비스의 반납처리
+reservation 서비스의 반납처리
 http://localhost:8081/return_action.html
+
 ![image](https://user-images.githubusercontent.com/84000909/121796248-a9051800-cc52-11eb-8404-a22b5e506819.png)
+
 --http localhost:8081/orders item="통닭"
 
-# rental 서비스의 차량회수
+rental 서비스의 차량회수
 localhost:8082/retrieve_action.html
+
 ![image](https://user-images.githubusercontent.com/84000909/121796262-b3271680-cc52-11eb-9e3b-037542fa1c4a.png)
+
 --http localhost:8083/주문처리s orderId=1
 
-# reservation 서비스의 예약취소
+reservation 서비스의 예약취소
 localhost:8081/cancel_action.html
+
 ![image](https://user-images.githubusercontent.com/84000909/121796270-bc17e800-cc52-11eb-845d-897b3abbab1e.png)
 
 --http localhost:8081/orders item="통닭"
 
-# 예약 상태 확인
+예약 상태 확인
 localhost:8084/mypage_action.html
+
 ![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
+
 --http localhost:8081/orders/1
 
-'''
+
 
 
 ## 폴리글랏 퍼시스턴스 : ????
