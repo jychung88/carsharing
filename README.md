@@ -673,18 +673,41 @@ public class PolicyHandler{
 실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 요리를 마친후, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.:????
   
 ```
-  @Autowired 주문관리Repository 주문관리Repository;
+    @Autowired 주문관리Repository 주문관리Repository;
   
-  @StreamListener(KafkaProcessor.INPUT)
-  public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
+    StreamListener(KafkaProcessor.INPUT)
+    public void wheneverReserved_AcceptRental(@Payload Reserved reserved){
 
-      if(결제승인됨.isMe()){
-          카톡전송(" 주문이 왔어요! : " + 결제승인됨.toString(), 주문.getStoreId());
+        if(!reserved.validate()) return;
 
-          주문관리 주문 = new 주문관리();
-          주문.setId(결제승인됨.getOrderId());
-          주문관리Repository.save(주문);
-      }
+        System.out.println("\n\n##### listener AcceptRental : " + reserved.toJson() + "\n\n");
+
+        String reserveId = Long.toString(reserved.getId());
+        String carId = reserved.getCarId();
+        String rentalAddr = reserved.getRentalAddr();
+        String retrieveAddr = reserved.getRetrieveAddr();
+        String userPhone = reserved.getUserPhone();
+        Long amount = reserved.getAmount();
+        String payType = reserved.getPayType();
+        String payNumber = reserved.getPayNumber();
+        String payCompany = reserved.getPayCompany();
+        String reserveDate = reserved.getReserveDate();
+
+        Rental rental = new Rental();
+        rental.setReserveId(reserveId);
+        rental.setCarId(carId);
+        rental.setRentalAddr(rentalAddr);
+        rental.setRetrieveAddr(retrieveAddr);
+        rental.setUserPhone(userPhone);
+        rental.setAmount(amount);
+        rental.setPayType(payType);
+        rental.setPayNumber(payNumber);
+        rental.setPayCompany(payCompany);
+        rental.setReserveDate(reserveDate);
+        LocalDate localDate = LocalDate.now();                
+        rental.setRentAcceptDate(localDate.toString());
+        rental.setRentalStatus("RentalAccepted");
+        rentalRepository.save(rental);          
   }
 
 ```
