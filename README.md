@@ -216,7 +216,7 @@
     - 서브 도메인과 바운디드 컨텍스트의 분리:  각 팀의 KPI 별로 아래와 같이 관심 구현 스토리를 나눠가짐
 
 
-# 구현: 수정
+# 구현:
 
 분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트와 파이선으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
 
@@ -231,7 +231,7 @@ cd rental
 mvn spring-boot:run  
 
 cd reservation
-python policy-handler.py 
+mvn spring-boot:run 
 ```
 
 ## DDD 의 적용 - 여기부터 수정해야 함
@@ -239,21 +239,41 @@ python policy-handler.py
 - 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 pay 마이크로 서비스). 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력했다. 하지만, 일부 구현에 있어서 영문이 아닌 경우는 실행이 불가능한 경우가 있기 때문에 계속 사용할 방법은 아닌것 같다. (Maven pom.xml, Kafka의 topic id, FeignClient 의 서비스 id 등은 한글로 식별자를 사용하는 경우 오류가 발생하는 것을 확인하였다)
 
 ```
-package fooddelivery;
+package carsharing;
 
 import javax.persistence.*;
 import org.springframework.beans.BeanUtils;
 import java.util.List;
+import java.util.Date;
 
 @Entity
-@Table(name="결제이력_table")
-public class 결제이력 {
+@Table(name="Payment_table")
+public class Payment {
 
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Long id;
-    private String orderId;
-    private Double 금액;
+    private String reserveId;
+    private String carId;
+    private String amount;
+    private String userPhone;
+    private String payType;
+    private String payNumber;
+    private String payCompany;
+    private String payStatus;
+    private String payCancelDate;
+
+
+    @PostUpdate
+    public void onPostUpdate(){
+        if ("PayCanled".equals(this.getPayStatus()))
+        {
+            PayCanceled payCanceled = new PayCanceled();
+            BeanUtils.copyProperties(this, payCanceled);
+            payCanceled.publishAfterCommit();
+        }                           
+    }
+
 
     public Long getId() {
         return id;
@@ -262,48 +282,114 @@ public class 결제이력 {
     public void setId(Long id) {
         this.id = id;
     }
-    public String getOrderId() {
-        return orderId;
+    public String getReserveId() {
+        return reserveId;
     }
 
-    public void setOrderId(String orderId) {
-        this.orderId = orderId;
+    public void setReserveId(String reserveId) {
+        this.reserveId = reserveId;
     }
-    public Double get금액() {
-        return 금액;
+    public String getCarId() {
+        return carId;
     }
 
-    public void set금액(Double 금액) {
-        this.금액 = 금액;
+    public void setCarId(String carId) {
+        this.carId = carId;
     }
+    public String getAmount() {
+        return amount;
+    }
+
+    public void setAmount(String amount) {
+        this.amount = amount;
+    }
+    public String getUserPhone() {
+        return userPhone;
+    }
+
+    public void setUserPhone(String userPhone) {
+        this.userPhone = userPhone;
+    }
+    public String getPayType() {
+        return payType;
+    }
+
+    public void setPayType(String payType) {
+        this.payType = payType;
+    }
+    public String getPayNumber() {
+        return payNumber;
+    }
+
+    public void setPayNumber(String payNumber) {
+        this.payNumber = payNumber;
+    }
+    public String getPayCompany() {
+        return payCompany;
+    }
+
+    public void setPayCompany(String payCompany) {
+        this.payCompany = payCompany;
+    }
+    public String getPayStatus() {
+        return payStatus;
+    }
+
+    public void setPayStatus(String payStatus) {
+        this.payStatus = payStatus;
+    }
+
+    public String getPayCancelDate() {
+        return payCancelDate;
+    }
+
+    public void setPayCancelDate(String payCancelDate) {
+        this.payCancelDate = payCancelDate;
+    }  
+
 
 }
+
 
 ```
 - Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
 ```
-package fooddelivery;
+package carsharing;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.rest.core.annotation.RepositoryRestResource;
 
-public interface 결제이력Repository extends PagingAndSortingRepository<결제이력, Long>{
+@RepositoryRestResource(collectionResourceRel="payments", path="payments")
+public interface PaymentRepository extends PagingAndSortingRepository<Payment, Long>{
+
+    Payment findByReserveId(String reserveId);
 }
+
 ```
-- 적용 후 REST API 의 테스트
+- 적용 후 REST API 의 테스트 : 이미지로 교체
 ```
-# app 서비스의 주문처리
+# reservation 서비스의 예약처리
 http localhost:8081/orders item="통닭"
 
-# store 서비스의 배달처리
+# rental 서비스의 대여처리
 http localhost:8083/주문처리s orderId=1
 
-# 주문 상태 확인
+# reservation 서비스의 반납처리
+http localhost:8081/orders item="통닭"
+
+# rental 서비스의 차량회수
+http localhost:8083/주문처리s orderId=1
+
+# reservation 서비스의 예약취소
+http localhost:8081/orders item="통닭"
+
+# 예약 상태 확인
 http localhost:8081/orders/1
 
 ```
 
 
-## 폴리글랏 퍼시스턴스
+## 폴리글랏 퍼시스턴스 : ????
 
 앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 Mongo DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 MongoDB 에 부착시켰다
 
@@ -337,7 +423,7 @@ public interface 주문Repository extends JpaRepository<Order, UUID>{
 
 ```
 
-## 폴리글랏 프로그래밍 
+## 폴리글랏 프로그래밍 : ????
 
 고객관리 서비스(customer)의 시나리오인 주문상태, 배달상태 변경에 따라 고객에게 카톡메시지 보내는 기능의 구현 파트는 해당 팀이 python 을 이용하여 구현하기로 하였다. 해당 파이썬 구현체는 각 이벤트를 수신하여 처리하는 Kafka consumer 로 구현되었고 코드는 다음과 같다:
 ```
@@ -379,20 +465,35 @@ CMD ["python", "policy-handler.py"]
 - 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
 
 ```
-# (app) 결제이력Service.java
+# (app) PaymentService.java
 
-package fooddelivery.external;
 
-@FeignClient(name="pay", url="http://localhost:8082")//, fallback = 결제이력ServiceFallback.class)
-public interface 결제이력Service {
+package carsharing.external;
 
-    @RequestMapping(method= RequestMethod.POST, path="/결제이력s")
-    public void 결제(@RequestBody 결제이력 pay);
+import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import java.util.Date;
+
+@FeignClient(name="payment", url="http://localhost:8083")
+public interface PaymentService {
+
+    @RequestMapping(method= RequestMethod.POST, path="/pay")        
+    public boolean pay(@RequestParam("reserveId") String reserveId,
+                @RequestParam("carId") String carId,
+                @RequestParam("amount") String amount,
+                @RequestParam("userPhone") String userPhone,
+                @RequestParam("payType") String userpayType,
+                @RequestParam("payNumber") String payNumber,
+                @RequestParam("payCompany") String payCompany);
 
 }
 ```
 
-- 주문을 받은 직후(@PostPersist) 결제를 요청하도록 처리
+- 주문을 받은 직후(@PostPersist) 결제를 요청하도록 처리 : 소스와 다름
 ```
 # Order.java (Entity)
 
@@ -413,7 +514,7 @@ public interface 결제이력Service {
 ```
 # 결제 (pay) 서비스를 잠시 내려놓음 (ctrl+c)
 
-#주문처리
+#예약처리
 http localhost:8081/orders item=통닭 storeId=1   #Fail
 http localhost:8081/orders item=피자 storeId=2   #Fail
 
@@ -421,7 +522,7 @@ http localhost:8081/orders item=피자 storeId=2   #Fail
 cd 결제
 mvn spring-boot:run
 
-#주문처리
+#예약처리
 http localhost:8081/orders item=통닭 storeId=1   #Success
 http localhost:8081/orders item=피자 storeId=2   #Success
 ```
@@ -436,7 +537,7 @@ http localhost:8081/orders item=피자 storeId=2   #Success
 
 결제가 이루어진 후에 상점시스템으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 상점 시스템의 처리를 위하여 결제주문이 블로킹 되지 않아도록 처리한다.
  
-- 이를 위하여 결제이력에 기록을 남긴 후에 곧바로 결제승인이 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
+- 이를 위하여 결제이력에 기록을 남긴 후에 곧바로 결제승인이 되었다는 도메인 이벤트를 카프카로 송출한다(Publish) 소스와 다름
  
 ```
 package fooddelivery;
@@ -455,30 +556,121 @@ public class 결제이력 {
 
 }
 ```
-- 상점 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
+- Rental 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
 
 ```
-package fooddelivery;
+package carsharing;
 
-...
+import carsharing.config.kafka.KafkaProcessor;
+
+import java.time.LocalDate;
+
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.annotation.StreamListener;
+import org.springframework.messaging.handler.annotation.Payload;
+import org.springframework.stereotype.Service;
 
 @Service
 public class PolicyHandler{
+    @Autowired RentalRepository rentalRepository;
 
     @StreamListener(KafkaProcessor.INPUT)
-    public void whenever결제승인됨_주문정보받음(@Payload 결제승인됨 결제승인됨){
+    public void wheneverReserved_AcceptRental(@Payload Reserved reserved){
 
-        if(결제승인됨.isMe()){
-            System.out.println("##### listener 주문정보받음 : " + 결제승인됨.toJson());
-            // 주문 정보를 받았으니, 요리를 슬슬 시작해야지..
-            
-        }
+        if(!reserved.validate()) return;
+
+        System.out.println("\n\n##### listener AcceptRental : " + reserved.toJson() + "\n\n");
+
+        String reserveId = Long.toString(reserved.getId());
+        String carId = reserved.getCarId();
+        String rentalAddr = reserved.getRentalAddr();
+        String retrieveAddr = reserved.getRetrieveAddr();
+        String userPhone = reserved.getUserPhone();
+        Long amount = reserved.getAmount();
+        String payType = reserved.getPayType();
+        String payNumber = reserved.getPayNumber();
+        String payCompany = reserved.getPayCompany();
+        String reserveDate = reserved.getReserveDate();
+
+        Rental rental = new Rental();
+        rental.setReserveId(reserveId);
+        rental.setCarId(carId);
+        rental.setRentalAddr(rentalAddr);
+        rental.setRetrieveAddr(retrieveAddr);
+        rental.setUserPhone(userPhone);
+        rental.setAmount(amount);
+        rental.setPayType(payType);
+        rental.setPayNumber(payNumber);
+        rental.setPayCompany(payCompany);
+        rental.setReserveDate(reserveDate);
+        LocalDate localDate = LocalDate.now();                
+        rental.setRentAcceptDate(localDate.toString());
+        rental.setRentalStatus("RentalAccepted");
+        rentalRepository.save(rental);           
+
+        System.out.println("##### rental accepted by reservation reserve #####");
+        System.out.println("reserveId : " + reserveId);             
     }
+    
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverReserveCanceled_CancelRental(@Payload ReserveCanceled reserveCanceled){
+
+        if(!reserveCanceled.validate()) return;
+
+        System.out.println("\n\n##### listener CancelRental : " + reserveCanceled.toJson() + "\n\n");
+
+
+        String reserveId = reserveCanceled.getId().toString();
+        Rental rental = rentalRepository.findByReserveId(reserveId);
+        if (rental != null) {
+            rental.setRentalStatus("RentalCanceled");
+            LocalDate localDate = LocalDate.now();                
+            rental.setRentCancelDate(localDate.toString());            
+            rentalRepository.save(rental); 
+
+            System.out.println("##### lental canceld by reservation cancel #####");
+            System.out.println("reserveId : " + reserveId);    
+        }
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        }                   
+    }
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverReserveReturned_AcceptReturn(@Payload ReserveReturned reserveReturned){
+
+        if(!reserveReturned.validate()) return;
+
+        System.out.println("\n\n##### listener AcceptReturn : " + reserveReturned.toJson() + "\n\n");
+
+        String reserveId = reserveReturned.getId().toString();
+        Rental rental = rentalRepository.findByReserveId(reserveId);
+        if (rental != null) {
+            rental.setRentalStatus("ReturnAccepted");
+            LocalDate localDate = LocalDate.now();                
+            rental.setRetAcceptDate(localDate.toString());            
+            rentalRepository.save(rental); 
+
+            System.out.println("##### return accepted by reservation return #####");
+            System.out.println("reserveId : " + reserveId);    
+        }             
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        }                   
+   }
+
+
+    @StreamListener(KafkaProcessor.INPUT)
+    public void whatever(@Payload String eventString){}
+
 
 }
 
+
 ```
-실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 요리를 마친후, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.:
+실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 요리를 마친후, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.:????
   
 ```
   @Autowired 주문관리Repository 주문관리Repository;
