@@ -748,9 +748,13 @@ public class PolicyHandler{
 #주문처리
 http localhost:8081/orders item=통닭 storeId=1   #Success
 http localhost:8081/orders item=피자 storeId=2   #Success
+![image](https://user-images.githubusercontent.com/84000909/121798457-757dba00-cc61-11eb-8ead-2f14dbcf345c.png)
+![image](https://user-images.githubusercontent.com/84000909/121798394-fa1c0880-cc60-11eb-9d1d-b4ef3826320e.png)
 
 #주문상태 확인
 http localhost:8080/orders     # 주문상태 안바뀜 확인
+http://localhost:8084/mypage?reserveId=5&userPhone=
+![image](https://user-images.githubusercontent.com/84000909/121798496-9d6d1d80-cc61-11eb-8e42-581a0745ec51.png)
 
 #상점 서비스 기동
 cd 상점
@@ -758,6 +762,8 @@ mvn spring-boot:run
 
 #주문상태 확인
 http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 확인
+상태가 동일함
+결재하고나면 상태를 pay완료 --> rental이 살으면 상태를 rentaccepted로 변경해야 할것 같음
 ```
 
 
