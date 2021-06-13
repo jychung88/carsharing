@@ -18,7 +18,7 @@ spec:
         - name: rental
           image: hanchyacr.azurecr.io/carsharing-rental:latest
           ports:
-            - containerPort: 8083
+            - containerPort: 8080
 #          readinessProbe:
 #            httpGet:
 #              path: '/actuator/health'

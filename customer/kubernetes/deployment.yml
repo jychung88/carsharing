@@ -18,7 +18,7 @@ spec:
         - name: customer
           image: hanchyacr.azurecr.io/carsharing-reservation:latest
           ports:
-            - containerPort: 8084
+            - containerPort: 8080
 #          readinessProbe:
 #            httpGet:
 #              path: '/actuator/health'
