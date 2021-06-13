@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: reservation
-          image: hanchyacr.azurecr.io/carsharing-customer:latest
+          image: hanchyacr.azurecr.io/carsharing-reservation:latest
           ports:
             - containerPort: 8080
           env:
