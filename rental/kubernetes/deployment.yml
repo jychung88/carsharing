@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: rental
-          image: username/rental:latest
+          image: hanchyacr.azurecr.io/carsharing-rental:latest
           ports:
             - containerPort: 8080
 #          readinessProbe:
