@@ -368,43 +368,40 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 ```
 - 적용 후 REST API 의 테스트
 
-- reservation 서비스의 예약처리
-http://localhost:8081/reserve_action.html
+  - reservation 서비스의 예약처리
+    http://localhost:8081/reserve_action.html
 
-![image](https://user-images.githubusercontent.com/84000909/121796226-8bd04980-cc52-11eb-82c0-70d5b8d79f7c.png)
-
-
-
-- rental 서비스의 대여처리
-http://localhost:8082/rental_action.html
-
-![image](https://user-images.githubusercontent.com/84000909/121796234-9db1ec80-cc52-11eb-8275-a2dcb79d60a1.png)
+    ![image](https://user-images.githubusercontent.com/84000909/121796226-8bd04980-cc52-11eb-82c0-70d5b8d79f7c.png)
 
 
 
-- reservation 서비스의 반납처리
-http://localhost:8081/return_action.html
+  - rental 서비스의 대여처리
+    http://localhost:8082/rental_action.html
 
-![image](https://user-images.githubusercontent.com/84000909/121796248-a9051800-cc52-11eb-8404-a22b5e506819.png)
-
-
-- rental 서비스의 차량회수
-http://localhost:8082/retrieve_action.html
-
-![image](https://user-images.githubusercontent.com/84000909/121796262-b3271680-cc52-11eb-9e3b-037542fa1c4a.png)
-
-
-- reservation 서비스의 예약취소
-http://localhost:8081/cancel_action.html
-
-![image](https://user-images.githubusercontent.com/84000909/121796270-bc17e800-cc52-11eb-845d-897b3abbab1e.png)
+    ![image](https://user-images.githubusercontent.com/84000909/121796234-9db1ec80-cc52-11eb-8275-a2dcb79d60a1.png)
 
 
 
-- 예약 상태 확인
-http://localhost:8084/mypage_action.html
+  - reservation 서비스의 반납처리
+    http://localhost:8081/return_action.html
 
-![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
+    ![image](https://user-images.githubusercontent.com/84000909/121796248-a9051800-cc52-11eb-8404-a22b5e506819.png)
+
+  - rental 서비스의 차량회수
+    http://localhost:8082/retrieve_action.html
+
+    ![image](https://user-images.githubusercontent.com/84000909/121796262-b3271680-cc52-11eb-9e3b-037542fa1c4a.png)
+
+  - reservation 서비스의 예약취소
+    http://localhost:8081/cancel_action.html
+
+    ![image](https://user-images.githubusercontent.com/84000909/121796270-bc17e800-cc52-11eb-845d-897b3abbab1e.png)
+
+
+  - 예약 상태 확인
+    http://localhost:8084/mypage_action.html
+
+    ![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
 
 
 
