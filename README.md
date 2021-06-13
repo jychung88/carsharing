@@ -530,19 +530,24 @@ public interface PaymentService {
 
 
 ```
-# 결제 (pay) 서비스를 잠시 내려놓음 (ctrl+c)
+# 결제 (payment) 서비스를 잠시 내려놓음 (ctrl+c)
 
 #예약처리
-http localhost:8081/orders item=통닭 storeId=1   #Fail
-http localhost:8081/orders item=피자 storeId=2   #Fail
+- 요청
+![image](https://user-images.githubusercontent.com/84000909/121798344-af01f580-cc60-11eb-9525-bd2c1a4b8491.png)
+- 결과
+![image](https://user-images.githubusercontent.com/84000909/121798328-9e517f80-cc60-11eb-8403-0db19433d25e.png)
 
 #결제서비스 재기동
-cd 결제
+cd payment
 mvn spring-boot:run
 
 #예약처리
-http localhost:8081/orders item=통닭 storeId=1   #Success
-http localhost:8081/orders item=피자 storeId=2   #Success
+- 요청
+![image](https://user-images.githubusercontent.com/84000909/121798344-af01f580-cc60-11eb-9525-bd2c1a4b8491.png)
+- 결과
+![image](https://user-images.githubusercontent.com/84000909/121798394-fa1c0880-cc60-11eb-9d1d-b4ef3826320e.png)
+
 ```
 
 - 또한 과도한 요청시에 서비스 장애가 도미노 처럼 벌어질 수 있다. (서킷브레이커, 폴백 처리는 운영단계에서 설명한다.)
