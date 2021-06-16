@@ -102,10 +102,10 @@ import java.util.List;
         }   
         else{
             if (reserveId != "") {
-                writer.write("not found reserve number : " + reserveId + "\r\n");
+                writer.write("not found ReserveNumber : " + reserveId + "\r\n");
             }
             else {
-                writer.write("not found userPhone : " + userPhone + "\r\n");
+                writer.write("not found UserPhone : " + userPhone + "\r\n");
             }            
         } 
 

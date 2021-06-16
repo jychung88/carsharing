@@ -29,7 +29,7 @@ import java.util.Optional;
         Rental rental = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
             .findByReserveId(reserveId);
 
-        String status = "Rentaled reserve number : " + reserveId;                     
+        String status = "Rentaled";                     
         if (rental != null) {
             String curStatus = rental.getRentalStatus();            
             if ("RentalAccepted".equals(curStatus)) {            
@@ -40,14 +40,14 @@ import java.util.Optional;
                 .save(rental);
             }
             else {
-                status = "reserve status is not RentalAccepted(current : " + curStatus + ", reserve number : " + reserveId + ")"; 
+                status = "reserve status is not RentalAccepted(current : " + curStatus + ")"; 
             }
         }   
         else{
-            status = "not found reserve number : " + reserveId; 
+            status = "not found";
         } 
 
-        return status; 
+        return status +  " ReserveNumber : " + reserveId; 
     }
 
     @RequestMapping(value = "/retrieved",
@@ -66,7 +66,7 @@ import java.util.Optional;
         Rental rental = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
             .findByReserveId(reserveId);
 
-        String status = "RentalRetrieved reserve number : " + reserveId;                     
+        String status = "RentalRetrieved";                     
         if (rental != null) {
             String curStatus = rental.getRentalStatus();            
             if ("ReturnAccepted".equals(curStatus)) {              
@@ -77,15 +77,15 @@ import java.util.Optional;
                 .save(rental);
             }
             else {
-                status = "reserve status is not ReturnAccepted(current : " + curStatus + ", reserve number : " + reserveId + ")"; 
+                status = "reserve status is not ReturnAccepted(current : " + curStatus + ")"; 
             }            
 
         }   
         else{
-            status = "not found reserve number : " + reserveId; 
+            status = "not found"; 
         } 
 
-        return status; 
+        return status +  " ReserveNumber : " + reserveId; 
     }   
 
  }

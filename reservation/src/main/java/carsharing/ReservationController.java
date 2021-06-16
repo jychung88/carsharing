@@ -92,7 +92,7 @@ import java.util.Optional;
 
         String status = "";
         if (ret) {
-            status = "Reserved Number : " + reservation.getId();
+            status = "Reserved";
         } else {
             status = "ReserveFailed";
         } 
@@ -100,7 +100,7 @@ import java.util.Optional;
         reservation.setReserveStatus(status);
         reservation  = reservationRepository.save(reservation);
 
-        return status;
+        return status + " ReserveNumber : " + reserveId;          
     }
 
     @RequestMapping(value = "/cancel",
@@ -136,10 +136,10 @@ import java.util.Optional;
             }
         }
         else{
-            status = "not found reserveId : " + reserveId; 
+            status = "not found"; 
         }     
 
-        return status;          
+        return status + " ReserveNumber : " + reserveId;          
     }
 
     @RequestMapping(value = "/resreturn",
@@ -174,10 +174,10 @@ import java.util.Optional;
             }            
         }   
         else{
-            status = "not found reserveId : " + reserveId; 
+            status = "not found"; 
         } 
 
-        return status;                         
+        return status + " ReserveNumber : " + reserveId;          
     }   
 }
 
