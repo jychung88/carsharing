@@ -26,12 +26,11 @@ import java.util.Optional;
         System.out.println("##### reserveId : " + reserveId);
         System.out.println("##### rentalDate : " + rentalDate);
 
-        Optional<Rental> rentalOptional = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
-                  .findById(Long.parseLong(reserveId));
+        Rental rental = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
+            .findByReserveId(reserveId);
 
         String status = "Rentaled";                     
-        if (rentalOptional.isEmpty() == false) {
-            Rental rental = rentalOptional.get();
+        if (rental != null) {
             String curStatus = rental.getRentalStatus();            
             if ("RentalAccepted".equals(curStatus)) {            
                 rental.setRentalDate(rentalDate);
@@ -64,12 +63,11 @@ import java.util.Optional;
         System.out.println("##### reserveId : " + reserveId);
         System.out.println("##### retrieveDate : " + retrieveDate);
 
-        Optional<Rental> rentalOptional = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
-                  .findById(Long.parseLong(reserveId));
+        Rental rental = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
+            .findByReserveId(reserveId);
 
         String status = "RentalRetrieved";                     
-        if (rentalOptional.isEmpty() == false) {
-            Rental rental = rentalOptional.get();
+        if (rental != null) {
             String curStatus = rental.getRentalStatus();            
             if ("ReturnAccepted".equals(curStatus)) {              
                 rental.setRentRetrieveDate(retrieveDate);
