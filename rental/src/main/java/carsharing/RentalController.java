@@ -29,7 +29,7 @@ import java.util.Optional;
         Rental rental = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
             .findByReserveId(reserveId);
 
-        String status = "Rentaled";                     
+        String status = "Rentaled reserve number : " + reserveId;                     
         if (rental != null) {
             String curStatus = rental.getRentalStatus();            
             if ("RentalAccepted".equals(curStatus)) {            
@@ -40,11 +40,11 @@ import java.util.Optional;
                 .save(rental);
             }
             else {
-                status = "reserve status is not RentalAccepted(current : " + curStatus + ")"; 
+                status = "reserve status is not RentalAccepted(current : " + curStatus + ", reserve number : " + reserveId + ")"; 
             }
         }   
         else{
-            status = "not found reserveId : " + reserveId; 
+            status = "not found reserve number : " + reserveId; 
         } 
 
         return status; 
@@ -66,7 +66,7 @@ import java.util.Optional;
         Rental rental = RentalApplication.applicationContext.getBean(carsharing.RentalRepository.class)
             .findByReserveId(reserveId);
 
-        String status = "RentalRetrieved";                     
+        String status = "RentalRetrieved reserve number : " + reserveId;                     
         if (rental != null) {
             String curStatus = rental.getRentalStatus();            
             if ("ReturnAccepted".equals(curStatus)) {              
@@ -77,12 +77,12 @@ import java.util.Optional;
                 .save(rental);
             }
             else {
-                status = "reserve status is not ReturnAccepted(current : " + curStatus + ")"; 
+                status = "reserve status is not ReturnAccepted(current : " + curStatus + ", reserve number : " + reserveId + ")"; 
             }            
 
         }   
         else{
-            status = "not found reserveId : " + reserveId; 
+            status = "not found reserve number : " + reserveId; 
         } 
 
         return status; 

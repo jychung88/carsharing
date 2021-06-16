@@ -92,7 +92,7 @@ import java.util.Optional;
 
         String status = "";
         if (ret) {
-            status = "Reserved";
+            status = "Reserved Number : " + reservation.getId();
         } else {
             status = "ReserveFailed";
         } 

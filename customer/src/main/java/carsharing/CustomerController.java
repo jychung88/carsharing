@@ -27,6 +27,9 @@ import java.util.List;
         String reserveId = request.getParameter("reserveId").toString();
         String userPhone = request.getParameter("userPhone").toString();
 
+        System.out.println("##### reserveId : " + reserveId);
+        System.out.println("##### userPhone : " + userPhone);
+
         List<MyPage> myPageList = null;
         response.setContentType("text/plain");
         response.setCharacterEncoding("UTF-8");
@@ -62,7 +65,7 @@ import java.util.List;
                 String payCancelDate = myPage.getPayCancelDate();
 
                 writer.write(i + " : ");
-                writer.write("reserveId=" + reserveId);
+                writer.write("reserve Number=" + reserveId);
                 writer.write(",userPhone=" + userPhone);
                 writer.write(",status=" + statsus);
                 writer.write(",carId=" + carId);
@@ -99,7 +102,7 @@ import java.util.List;
         }   
         else{
             if (reserveId != "") {
-                writer.write("not found reserveId : " + reserveId + "\r\n");
+                writer.write("not found reserve number : " + reserveId + "\r\n");
             }
             else {
                 writer.write("not found userPhone : " + userPhone + "\r\n");
