@@ -116,13 +116,11 @@ import java.util.Optional;
         System.out.println("##### reserveId : " + reserveId);
         System.out.println("##### cancelDate : " + cancelDate);        
 
-
-        Optional<Reservation> reservationOptional = ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
-                  .findById(Long.parseLong(reserveId));
+        Optional<Reservation> reservationOptional = reservationRepository.findById(Long.parseLong(reserveId));
 
         String status = "ReserveCanceled";          
 
-        if (reservationOptional.isEmpty() == false) {
+        if (reservationOptional.isPresent()) {
             Reservation reservation = reservationOptional.get();
             String curStatus = reservation.getReserveStatus();
             if ("Reserved".equals(curStatus)) {
@@ -155,11 +153,10 @@ import java.util.Optional;
         System.out.println("##### reserveId : " + reserveId);
         System.out.println("##### returnDate : " + returnDate);
 
-        Optional<Reservation> reservationOptional = ReservationApplication.applicationContext.getBean(carsharing.ReservationRepository.class)
-                  .findById(Long.parseLong(reserveId));
+        Optional<Reservation> reservationOptional = reservationRepository.findById(Long.parseLong(reserveId));
 
         String status = "ReserveReturned";                     
-        if (reservationOptional.isEmpty() == false) {
+        if (reservationOptional.isPresent()) {
             Reservation reservation = reservationOptional.get();
             String curStatus = reservation.getReserveStatus();
             if ("Reserved".equals(curStatus)) {            
