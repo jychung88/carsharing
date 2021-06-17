@@ -127,14 +127,14 @@
 
 ### 완성된 모형
 
-![image](https://user-images.githubusercontent.com/82005223/122397854-4db98980-cfb4-11eb-88b0-ed9729a0d556.png)
+![image](https://user-images.githubusercontent.com/84000909/122478876-25a64680-d005-11eb-9295-14298277a597.png)
 
 
 
 ### 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 
 
-![image](https://user-images.githubusercontent.com/84000909/121767708-f7ec7800-cb94-11eb-8607-8e543d49f98b.png)
+![image](https://user-images.githubusercontent.com/84000909/122479068-787ffe00-d005-11eb-8265-ca229d308a0c.png)
 
     - 고객이 차량을 선택하여 예약한다 (ok)
     - 고객이 결제한다 (ok)
@@ -154,7 +154,7 @@
 
 ### 비기능 요구사항에 대한 검증
 
-![image](https://user-images.githubusercontent.com/84000909/121767886-23bc2d80-cb96-11eb-8cfd-4c2f52790bae.png)
+![image](https://user-images.githubusercontent.com/84000909/122479151-9188af00-d005-11eb-8d34-f0d088b38f51.png)
 
     - 마이크로 서비스를 넘나드는 시나리오에 대한 트랜잭션 처리
         - 고객 예약시 결제처리:  결제가 완료되지 않은 예약은 절대 받지 않는다는 경영자의 오랜 신념(?) 에 따라, ACID 트랜잭션 적용. 예약완료시 결제처리에 대해서는 Request-Response 방식 처리
