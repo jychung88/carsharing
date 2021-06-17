@@ -895,6 +895,7 @@ kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.7/sampl
 ```
 
 2-2. 모니터링 툴 설정
+
 ```
 kubectl edit svc kiali -n istio-system
 :%s/ClusterIP/LoadBalancer/g
