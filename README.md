@@ -402,32 +402,11 @@ kubectl get svc -n ns-carsharing
 
 ## 폴리글랏
 
-앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 HSQL DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 HSQL DB 에 부착시켰다
+앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 H2 DB와 HSQL DB에 부착시켰다.
+Reservatio : HSQL DB
+나머지 Payment/rental/Customer : H2 DB
 
-
-
-```
-# Order.java
-
-package fooddelivery;
-
-@Document
-public class Order {
-
-    private String id; // mongo db 적용시엔 id 는 고정값으로 key가 자동 발급되는 필드기 때문에 @Id 나 @GeneratedValue 를 주지 않아도 된다.
-    private String item;
-    private Integer 수량;
-
-}
-
-
-# 주문Repository.java
-package fooddelivery;
-
-public interface 주문Repository extends JpaRepository<Order, UUID>{
-}
-```
-## application.yml
+## Reservation application.yml
 
 ![image](https://user-images.githubusercontent.com/84000909/122356555-df61d080-cf8d-11eb-9a2d-d860e54c5e08.png)
 
@@ -440,12 +419,12 @@ public interface 주문Repository extends JpaRepository<Order, UUID>{
 
 ## 동기식 호출 과 Fallback 처리
 
-분석단계에서의 조건 중 하나로 주문(app)->결제(pay) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
+분석단계에서의 조건 중 하나로 예약(Reservation)->결제(Payment) 간의 호출은 동기식 일관성을 유지하는 트랜잭션으로 처리하기로 하였다. 호출 프로토콜은 이미 앞서 Rest Repository 에 의해 노출되어있는 REST 서비스를 FeignClient 를 이용하여 호출하도록 한다. 
 
 - 결제서비스를 호출하기 위하여 Stub과 (FeignClient) 를 이용하여 Service 대행 인터페이스 (Proxy) 를 구현 
 
 ```
-# (app) PaymentService.java
+# (Reservation) PaymentService.java
 
 
 package carsharing.external;
@@ -458,7 +437,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Date;
 
-@FeignClient(name="payment", url="http://localhost:8083")
+@FeignClient(name="payment", url="${api.payment.url}")  // payment url => http://localhost:8083
 public interface PaymentService {
 
     @RequestMapping(method= RequestMethod.POST, path="/pay")        
@@ -473,9 +452,9 @@ public interface PaymentService {
 }
 ```
 
-- 주문을 받은 직후(@PostPersist) 결제를 요청하도록 처리 : PostPersist 처리시 데이터가 한건 저장이 되어 ReservationController로 구현함
+- 예약을 받은 직후(@PostPersist) 결제를 요청하도록 처리 : PostPersist 처리시 데이터가 한건 저장이 되어 ReservationController로 구현함
 ```
-# ReservationController.java (Entity)
+# ReservationController.java (Controller)
     
     @RequestMapping(value = "/reserve",
     method = RequestMethod.POST,
@@ -538,7 +517,7 @@ public interface PaymentService {
         reservation.setReserveStatus(status);
         reservation  = reservationRepository.save(reservation);
 
-        return status;
+        return status + " ReserveNumber : " + reserveId;          
     }
 ```
 
@@ -546,7 +525,7 @@ public interface PaymentService {
 
 
 ```
-# 결제 (payment) POD를 삭제
+# 결제 (Payment) POD를 삭제
 ![image](https://user-images.githubusercontent.com/84000909/122337244-06fa6e00-cf79-11eb-984b-a699e14fabbe.png)
 
 
@@ -563,7 +542,7 @@ public interface PaymentService {
 
 
 ```
-#결제서비스 POD 재등록
+#결제서비스 POD 재배포
 ![image](https://user-images.githubusercontent.com/84000909/122337767-be8f8000-cf79-11eb-877e-925717f10fcc.png)
 
 #예약처리
@@ -586,10 +565,11 @@ public interface PaymentService {
 ## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
 
 
-결제가 이루어진 후에 렌털시스템으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 상점 시스템의 처리를 위하여 결제주문이 블로킹 되지 않아도록 처리한다.
+예약이 이루어진 후에 대여점으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 Rental 서비스가 장애시에도 예약/결제가 블로킹 되지 않아도록 처리한다.
  
-- 이를 위하여 결제이력에 기록을 남긴 후에 곧바로 결제승인이 되었다는 도메인 이벤트를 카프카로 송출한다(Publish)
+- 이를 위하여 예약이 되면 예약됨 도메인 이벤트를 카프카로 송출한다(Publish)
  
+ <Reservation.java>
 ```
 package carsharing;
 
@@ -599,23 +579,52 @@ import java.util.List;
 import java.util.Date;
 
 @Entity
-@Table(name="Rental_table")
-public class Rental {
+@Table(name="Reservation_table")
+public class Reservation {
 
- ...
-    @PostPersist
-    public void onPostPersist(){
-        if ("RentalAccepted".equals(this.getRentalStatus())) {        
-            RentalAccepted rentalAccepted = new RentalAccepted();
-            BeanUtils.copyProperties(this, rentalAccepted);
-            rentalAccepted.publishAfterCommit();
-        }
+    @Id
+    @GeneratedValue(strategy=GenerationType.AUTO)
+    private Long id;
+    private String carId;
+    private String rentalAddr;
+    private String retrieveAddr;
+    private String userPhone;
+    private Long amount;
+    private String payType;
+    private String payNumber;
+    private String payCompany;
+    private String reserveDate;
+    private String cancelDate;
+    private String returnDate;
+    private String reserveStatus;
+
+    @PostUpdate
+    public void onPostUpdate(){
+        if ("Reserved".equals(this.getReserveStatus()))
+        {
+            Reserved reserved = new Reserved();
+            BeanUtils.copyProperties(this, reserved);
+            reserved.publishAfterCommit();
+            System.out.println("##### send event : Reserved  #####");   
+        } 
+        else if ("ReserveCanceled".equals(this.getReserveStatus()))
+        {
+            ReserveCanceled reserveCanceled = new ReserveCanceled();
+            BeanUtils.copyProperties(this, reserveCanceled);
+            reserveCanceled.publishAfterCommit();
+        }               
+        else if ("ReserveReturned".equals(this.getReserveStatus()) )
+        {
+            ReserveReturned reserveReturned = new ReserveReturned();
+            BeanUtils.copyProperties(this, reserveReturned);
+            reserveReturned.publishAfterCommit();
+            System.out.println("##### send event : ReserveReturned  #####");  
+        }             
     }
-
-}
 ```
-- Rental 서비스에서는 결제승인 이벤트에 대해서 이를 수신하여 자신의 정책을 처리하도록 PolicyHandler 를 구현한다:
-
+- Rental 서비스에서는 예약됨 이벤트를 수신하여 자신의 정책을 처리하도록(RentalAccepted) PoliyHandler 를 구현한다:
+ 예약정보를 DB에 RentalAccepted 상태로 저장한 후, 이후 처리는 해당 Aggregate 내에서 한다.
+ <
 ```
 package carsharing;
 
@@ -726,51 +735,9 @@ public class PolicyHandler{
 
 }
 
-
-```
-실제 구현을 하자면, 카톡 등으로 점주는 노티를 받고, 주문 상태를 UI에 입력할테니, 우선 주문정보를 DB에 받아놓은 후, 이후 처리는 해당 Aggregate 내에서 하면 되겠다.
-  
-```
-    @Autowired RentalRepository rentalRepository;
-  
-    StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReserved_AcceptRental(@Payload Reserved reserved){
-
-        if(!reserved.validate()) return;
-
-        System.out.println("\n\n##### listener AcceptRental : " + reserved.toJson() + "\n\n");
-
-        String reserveId = Long.toString(reserved.getId());
-        String carId = reserved.getCarId();
-        String rentalAddr = reserved.getRentalAddr();
-        String retrieveAddr = reserved.getRetrieveAddr();
-        String userPhone = reserved.getUserPhone();
-        Long amount = reserved.getAmount();
-        String payType = reserved.getPayType();
-        String payNumber = reserved.getPayNumber();
-        String payCompany = reserved.getPayCompany();
-        String reserveDate = reserved.getReserveDate();
-
-        Rental rental = new Rental();
-        rental.setReserveId(reserveId);
-        rental.setCarId(carId);
-        rental.setRentalAddr(rentalAddr);
-        rental.setRetrieveAddr(retrieveAddr);
-        rental.setUserPhone(userPhone);
-        rental.setAmount(amount);
-        rental.setPayType(payType);
-        rental.setPayNumber(payNumber);
-        rental.setPayCompany(payCompany);
-        rental.setReserveDate(reserveDate);
-        LocalDate localDate = LocalDate.now();                
-        rental.setRentAcceptDate(localDate.toString());
-        rental.setRentalStatus("RentalAccepted");
-        rentalRepository.save(rental);          
-  }
-
 ```
 
-렌탈 시스템은 주문/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, Rental시스템이 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
+렌탈 서비스는 예약/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, Rental서비스가 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
 ```
 # Rental 서비스 (rental) 를 잠시 내려놓음 (ctrl+c)
 ![image](https://user-images.githubusercontent.com/84000909/122337843-d7983100-cf79-11eb-8bac-95d62352d286.png)
@@ -823,9 +790,20 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ![image](https://user-images.githubusercontent.com/84000909/122336003-1f698900-cf77-11eb-842d-3db2758282ad.png)
 
 ```
-mvn package -Dmaven.test.skip=true
+- 빌드
+  서비스 소스 폴더로 이동(Reservation)
+  mvn package -Dmaven.test.skip=true
+
+- 도커이미지 생성 및 RCR에 등록
 az acr build --registry user04skccacr --image user04skccacr.azurecr.io/carsharing-reservation:latest --file Dockerfile .
+  
+- Deployment 배포 
+  kubernetes 폴더로 이동
 kubectl apply -f deployment.yml -n ns-carsharing
+
+- Service 배포 
+kubectl apply -f service.yaml -n ns-carsharing
+
 ```
 kubelctl get all -n ns-carsharing  결과
 ![image](https://user-images.githubusercontent.com/84000909/122359556-9d865980-cf90-11eb-9b56-be9227efd0c7.png)
@@ -833,7 +811,10 @@ kubelctl get all -n ns-carsharing  결과
 
 ## Config Map
 
-* Config Map을 등록함
+* Config Map을 환경변수 등록함
+kubectl create configmap cm-carsharing --namespace="ns-carsharing" --from-literal=DB_IP=10.20.30.1 --from-literal=DB_SERVICE_NAME=CARS
+
+kubectl get cm -n ns-carsharing
  
 ![image](https://user-images.githubusercontent.com/84000909/122322316-3fda1900-cf60-11eb-838d-895ee6df611a.png)
 
@@ -877,7 +858,7 @@ kubectl edit svc kiali -n istio-system
 ![image](https://user-images.githubusercontent.com/84000909/122344703-087c6400-cf82-11eb-9aa7-d3e240e04509.png)
 
 ```
-20.41.97.46:20001 (admin/admin)
+http://20.41.97.46:20001/ (admin/admin)
 ```
 3. 네임스페이스 생성
 ```
