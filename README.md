@@ -575,6 +575,7 @@ mvn spring-boot:run
 
 
 
+
 ## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
 
 
@@ -786,6 +787,9 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 상태가 동일함
 결재하고나면 상태를 pay완료 --> rental이 살으면 상태를 rentaccepted로 변경해야 할것 같음
 ```
+![image](https://user-images.githubusercontent.com/84000909/122321481-e45b5b80-cf5e-11eb-8df4-5838e4dac37a.png)
+
+![image](https://user-images.githubusercontent.com/84000909/122321455-dc9bb700-cf5e-11eb-9c2d-78b3d36e1958.png)
 
 
 # 운영
@@ -1135,3 +1139,7 @@ Request/Response 방식으로 구현하지 않았기 때문에 서비스가 더�
         **/
     }
 ```
+
+
+컨피그맵
+![image](https://user-images.githubusercontent.com/84000909/122322316-3fda1900-cf60-11eb-838d-895ee6df611a.png)
