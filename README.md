@@ -549,16 +549,17 @@ public interface PaymentService {
 
 
 ```
-# 결제 (Payment) POD를 삭제
+# 결제 (Payment) POD를 임시로 삭제
+```
 ![image](https://user-images.githubusercontent.com/84000909/122337244-06fa6e00-cf79-11eb-984b-a699e14fabbe.png)
 
-
+```
 #예약처리
 - 요청
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337365-36a97600-cf79-11eb-864c-5c184daad747.png)
 ```
-- 결과 : 이벤트 없음 & cadId 3번의 ReserveStatus 가 ReserveCanceled로 적용됨
+- 결과 : 이벤트 없음 & cadId 3번의 ReserveStatus 가 ReserveFailed로 적용됨
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337403-41640b00-cf79-11eb-9261-d5a04f08b59c.png)
 ![image](https://user-images.githubusercontent.com/84000909/122337453-52148100-cf79-11eb-910b-a487e6e97920.png)
