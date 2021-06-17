@@ -358,16 +358,21 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
     ![image](https://user-images.githubusercontent.com/84000909/121796270-bc17e800-cc52-11eb-845d-897b3abbab1e.png)
 
 
+## CQRS
+
   - 예약 상태 확인
     http://localhost:8084/mypage_action.html
 
     ![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
 
 
+## Gateway
 
+gateway 프로젝트 내 application.yml: 신규 서비스 8085~8087로 등록
 
+작성해야 함
 
-## 폴리글랏 퍼시스턴스 : ????
+## 폴리글랏 퍼시스턴스
 
 앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 Mongo DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 MongoDB 에 부착시켰다
 
@@ -791,11 +796,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 ![image](https://user-images.githubusercontent.com/84000909/122321455-dc9bb700-cf5e-11eb-9c2d-78b3d36e1958.png)
 
-#gateway
 
-gateway 프로젝트 내 application.yml: 신규 서비스 8085~8087로 등록
-
-작성해야 함
 
 
 # 운영
