@@ -1008,7 +1008,7 @@ Concurrency:		       96.02
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
 
-# 신규 개발 조직의 추가
+# 신규 개발 조직의 추가 -- 이하 개인과제로 금번 조별 과제에서는 대상이 아니며, 개인과제 대비하여 문서는 남겨 놓음
 
   ![image](https://user-images.githubusercontent.com/487999/79684133-1d6c4300-826a-11ea-94a2-602e61814ebf.png)
 
