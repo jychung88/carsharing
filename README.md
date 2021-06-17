@@ -874,42 +874,49 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
 1. Istio 설치
+```
 $ curl -L https://istio.io/downloadIstio | ISTIO_VERSION=1.7.1 TARGET_ARCH=x86_64 sh -
 $ cd istio-1.7.1
 $ export PATH=$PWD/bin:$PATH
 $ istioctl install --set profile=demo
 1-1.  설치확인
 $ kubectl get pod -n istio-system
-
+```
 2. Istio 모니터링 툴 설치
+```
 vi samples/addons/kiali.yaml
 
 4라인의
 apiVersion: apiextensions.k8s.io/v1beta1 을
 apiVersion: apiextensions.k8s.io/v1으로 수정
 kubectl apply -f samples/addons
+```
 
 2-2. 모니터링 툴 설정
+```
 kubectl edit svc kiali -n istio-system
 :%s/ClusterIP/LoadBalancer/g
 :wq!
-
+```
 2-3. 모니터링 시스템 접속
+```
 EXTERNAL-IP:20001 (admin/admin)
-
+```
 3. 네임스페이스 생성
+```
 kubectl create namespace istio-test-ns
 kubectl label namespace istio-test-ns istio-injection=enabled
 
 label에 istio-injection enabled 확인
 ![image](https://user-images.githubusercontent.com/34739884/122332872-2cd04480-cf72-11eb-8372-03583810bee9.png)
+```
 
 4 namespace로 서비스 재배포
-
+```
 kubectl create deploy gateway --image=hsh00.azurecr.io/gateway:latest -n istio-test-ns
 kubectl expose deploy gateway --type="LoadBalancer" --port=8080 -n istio-test-ns
 나머지 동일
-
+```
 생성된 Container 확인
 ![image](https://user-images.githubusercontent.com/34739884/122333060-85074680-cf72-11eb-96d6-f295680dbb97.png)
 Gateway 정상확인
@@ -917,7 +924,7 @@ Gateway 정상확인
 
 
 5. Circuit Breaker Destination Rule 생성
-
+```
 kubectl apply -f - <<EOF
   apiVersion: networking.istio.io/v1alpha3
   kind: DestinationRule
@@ -933,10 +940,11 @@ kubectl apply -f - <<EOF
           maxRequestsPerConnection: 1
 EOF
 
-
+```
 5-1. Siege Client 접속
+```
 kubectl exec -it pod/[객체] -n istio-cb-ns -- /bin/bash
-
+```
 
 정상 동작일떄 확인
 siege -c1 -t30S -v --content-type "application/json" 'http://52.231.99.165:8080/reservations POST {"carId": "g90", "amonut": "1"}'
