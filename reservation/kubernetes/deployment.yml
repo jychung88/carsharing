@@ -29,7 +29,14 @@ spec:
               valueFrom:
                 configMapKeyRef:
                   name: cm-carsharing
-                  key: DB_SERVICE_NAME            
+                  key: DB_SERVICE_NAME                  
+          resources:  # AutoScale Setting
+            limits:
+              cpu: 500m # max cpu
+              #memory: "200Mi"
+            requests:
+              cpu: 200m # start cpu
+              #memory: "100Mi"                            
 #          readinessProbe:
 #            httpGet:
 #              path: '/actuator/health'

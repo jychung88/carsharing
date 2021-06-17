@@ -65,8 +65,9 @@ spring:
           contentType: application/json
         event-out:
           destination: carsharing
-          contentType: application/json     
-env:
+          contentType: application/json
+api:
   payment:
-     url: http://40.88.241.44:80
-#     url: ${paymenturl}
+    url: http://payment:8080
+#    url: http://40.88.241.44:80
+#    url: ${paymenturl}
