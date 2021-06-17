@@ -368,9 +368,29 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 
 ## Gateway
 
-gateway 프로젝트 내 application.yml: 신규 서비스 8085~8087로 등록
+gateway application.yml Clust Ip로 수정
 
-작성해야 함
+![image](https://user-images.githubusercontent.com/84000909/122333298-e5968380-cf72-11eb-93b2-9a4cd7022c26.png)
+
+빌드
+mvn package -Dmaven.test.skip=true
+
+배포
+az acr build --registry user04skccacr --image user04skccacr.azurecr.io/carsharing-gateway:latest --file Dockerfile .
+kubectl create deploy gateway --image=user04skccacr.azurecr.io/carsharing-gateway:latest -n ns-carsharing
+kubectl expose deploy gateway --type="LoadBalancer" --port=8080 -n ns-carsharing
+kubectl get svc -n ns-carsharing
+![image](https://user-images.githubusercontent.com/84000909/122333701-7ec59a00-cf73-11eb-9209-f6fdde54868c.png)
+
+결과 확인
+
+![image](https://user-images.githubusercontent.com/84000909/122333866-bcc2be00-cf73-11eb-9d94-a477a843e4ee.png)
+
+![image](https://user-images.githubusercontent.com/84000909/122333892-c9471680-cf73-11eb-8050-7a4aed288ca5.png)
+
+![image](https://user-images.githubusercontent.com/84000909/122333931-d82dc900-cf73-11eb-8958-425151ce8230.png)
+
+![image](https://user-images.githubusercontent.com/84000909/122333958-e4198b00-cf73-11eb-8baa-33d89c2ddff3.png)
 
 ## 폴리글랏 퍼시스턴스
 
