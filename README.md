@@ -391,9 +391,11 @@ kubectl get svc -n ns-carsharing
 
 ![image](https://user-images.githubusercontent.com/84000909/122333958-e4198b00-cf73-11eb-8baa-33d89c2ddff3.png)
 
-## 폴리글랏 퍼시스턴스
+## 폴리글랏
 
-앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 Mongo DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 MongoDB 에 부착시켰다
+앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 RDB 보다는 Document DB / NoSQL 계열의 데이터베이스인 HSQL DB 를 사용하기로 하였다. 이를 위해 order 의 선언에는 @Entity 가 아닌 @Document 로 마킹되었으며, 별다른 작업없이 기존의 Entity Pattern 과 Repository Pattern 적용과 데이터베이스 제품의 설정 (application.yml) 만으로 HSQL DB 에 부착시켰다
+
+
 
 ```
 # Order.java
@@ -415,15 +417,12 @@ package fooddelivery;
 
 public interface 주문Repository extends JpaRepository<Order, UUID>{
 }
-
+```
 # application.yml
 
-  data:
-    mongodb:
-      host: mongodb.default.svc.cluster.local
-    database: mongo-example
+![image](https://user-images.githubusercontent.com/84000909/122356555-df61d080-cf8d-11eb-9a2d-d860e54c5e08.png)
 
-```
+
 
 ## 폴리글랏 프로그래밍 : ????
 
