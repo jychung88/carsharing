@@ -714,7 +714,7 @@ public class PolicyHandler{
 ```
 
 렌탈 서비스는 예약/결제와 완전히 분리되어 있으며, 이벤트 수신에 따라 처리되기 때문에, Rental서비스가 유지보수로 인해 잠시 내려간 상태라도 예약을 받는데 문제가 없다:
-```
+
 # Rental 서비스 (rental) 를 잠시 내려놓음 (ctrl+c)
 ![image](https://user-images.githubusercontent.com/84000909/122337843-d7983100-cf79-11eb-8bac-95d62352d286.png)
 
@@ -747,7 +747,7 @@ http://localhost:8084/mypage?reserveId=5&userPhone=
 http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 확인
 상태가 동일함
 결재하고나면 상태를 pay완료 --> rental이 살으면 상태를 rentaccepted로 변경해야 할것 같음
-```
+
 ![image](https://user-images.githubusercontent.com/84000909/122321481-e45b5b80-cf5e-11eb-8df4-5838e4dac37a.png)
 
 ![image](https://user-images.githubusercontent.com/84000909/122321455-dc9bb700-cf5e-11eb-9c2d-78b3d36e1958.png)
