@@ -919,19 +919,27 @@ kubectl get namespace istio-test-ns -o yaml
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122345051-61e49300-cf82-11eb-9922-bab4aa353e68.png)
 
-![image](https://user-images.githubusercontent.com/34739884/122332872-2cd04480-cf72-11eb-8372-03583810bee9.png)
+
 
 
 4 namespace로 서비스 재배포
 ```
-kubectl create deploy gateway --image=user04skccacr.azurecr.io/gateway:latest -n istio-test-ns
-kubectl expose deploy gateway --type="LoadBalancer" --port=8080 -n istio-test-ns
-나머지 동일
+kubectl create deploy gateway --image=user04skccacr.azurecr.io/carsharing-gateway:latest -n istio-test-ns
+kubectl create deploy reservation --image=user04skccacr.azurecr.io/carsharing-reservation:latest -n istio-test-ns
+kubectl create deploy rental --image=user04skccacr.azurecr.io/carsharing-rental:latest -n istio-test-ns
+kubectl create deploy payment --image=user04skccacr.azurecr.io/carsharing-payment:latest -n istio-test-ns
+kubectl create deploy customer --image=user04skccacr.azurecr.io/carsharing-customer:latest -n istio-test-ns
+kubectl expose deploy gatewayn --type="LoadBalancer" --port=8080 -n istio-test-ns
+kubectl expose deploy reservation --type="LoadBalancer" --port=8080 -n istio-test-ns
+kubectl expose deploy rental --type="LoadBalancer" --port=8080 -n istio-test-ns
+kubectl expose deploy payment --type="LoadBalancer" --port=8080 -n istio-test-ns
+kubectl expose deploy customer --type="LoadBalancer" --port=8080 -n istio-test-ns
+
+kubectl create deploy siege --image=apexacme/siege-nginx -n  istio-test-ns
 ```
 생성된 Container 확인
-![image](https://user-images.githubusercontent.com/34739884/122333060-85074680-cf72-11eb-96d6-f295680dbb97.png)
-Gateway 정상확인
-![image](https://user-images.githubusercontent.com/34739884/122333120-a0725180-cf72-11eb-8843-fd47274d09ec.png)
+![image](https://user-images.githubusercontent.com/84000909/122350024-c9e9a800-cf87-11eb-982d-eaba2cf13c5b.png)
+
 
 
 5. Circuit Breaker Destination Rule 생성
@@ -953,23 +961,26 @@ EOF
 
 ```
 5-1. Siege Client 접속
+
 ```
-kubectl exec -it pod/[객체] -n istio-cb-ns -- /bin/bash
+kubectl exec -it siege-88f7fdd8d-k45jb -n istio-test-ns -- /bin/bash
 ```
+
+IP주소 확인
+![image](https://user-images.githubusercontent.com/84000909/122350982-a8d58700-cf88-11eb-97d2-1847405c0153.png)
 
 정상 동작일떄 확인
-siege -c1 -t30S -v --content-type "application/json" 'http://52.231.99.165:8080/reservations POST {"carId": "g90", "amonut": "1"}'
-![image](https://user-images.githubusercontent.com/34739884/122333332-efb88200-cf72-11eb-92df-a5e3e396e113.png)
+siege -c1 -t30S -v --content-type "application/json" 'http://20.194.98.16:8080/reservations POST {"carId": "g90", "amonut": "1"}'
+![image](https://user-images.githubusercontent.com/84000909/122351081-c3a7fb80-cf88-11eb-9658-e3675b8da901.png)
+
 
 Circuit Breaker 동작 확인
-siege -c2 -t50S -v --content-type "application/json" 'http://52.141.63.150:8080/reservations POST {"carId": "g80", "amonut": "1"}'
-![image](https://user-images.githubusercontent.com/34739884/122333382-05c64280-cf73-11eb-97f8-658e5dc304f0.png)
+siege -c2 -t50S -v --content-type "application/json" 'http://20.194.98.16:8080/reservations POST {"carId": "g80", "amonut": "1"}'
+![image](https://user-images.githubusercontent.com/84000909/122351313-fbaf3e80-cf88-11eb-9fd2-f50d019cc7d5.png)
 
 
 6.모니터링 시스템 (kiali)에서 확인
 ![image](https://user-images.githubusercontent.com/34739884/122333511-41610c80-cf73-11eb-8cf8-47b16dd2941b.png)
-
-
 
 
 
@@ -1148,6 +1159,7 @@ Request/Response 방식으로 구현하지 않았기 때문에 서비스가 더�
         **/
     }
 ```
+
 
 
 
