@@ -715,22 +715,15 @@ public class PolicyHandler{
 
 렌탈 서비스는 예약/결제와 완전히 분리되어 있으며, 이벤트 수신에 따라 처리되기 때문에, Rental서비스가 유지보수로 인해 잠시 내려간 상태라도 예약을 받는데 문제가 없다:
 
-# Rental 서비스 (rental) 를 잠시 내려놓음 (ctrl+c)
+#Rental 서비스 (rental)의 POD를 잠시 삭제함
 ![image](https://user-images.githubusercontent.com/84000909/122337843-d7983100-cf79-11eb-8bac-95d62352d286.png)
 
 #예약처리
-http localhost:8081/orders item=통닭 storeId=1   #Success
-http localhost:8081/orders item=피자 storeId=2   #Success
-![image](https://user-images.githubusercontent.com/84000909/121798457-757dba00-cc61-11eb-8ead-2f14dbcf345c.png)
-![image](https://user-images.githubusercontent.com/84000909/121798394-fa1c0880-cc60-11eb-9d1d-b4ef3826320e.png)
 
 ![image](https://user-images.githubusercontent.com/84000909/122337932-f1d20f00-cf79-11eb-9c77-acdcf45f064b.png)
 
 
 #예약상태 확인
-http localhost:8080/orders     # 예약상태 안바뀜 확인
-http://localhost:8084/mypage?reserveId=5&userPhone=
-![image](https://user-images.githubusercontent.com/84000909/121798496-9d6d1d80-cc61-11eb-8e42-581a0745ec51.png)
 
 ![image](https://user-images.githubusercontent.com/84000909/122337961-fb5b7700-cf79-11eb-9632-221112b2ff26.png)
 
