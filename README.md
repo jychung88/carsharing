@@ -34,21 +34,20 @@
 기능적 요구사항
 1. 고객이 대여일자/대여지/차량을 선택하여 예약을 한다.
 1. 고객이 결제한다
-1. 예약이 되면 예약 내역이 대리점에게 전달된다.
-1. 대리점은 예약 정보를 바탕으로 대여지로 이동시킨다.
+1. 예약이 되면 예약 내역이 대여점에게 전달된다.
+1. 대여점은 예약 정보를 바탕으로 대여지로 이동시킨다.
 1. 고객이 예약을 취소할 수 있다
 1. 예약이 취소되면 대여지 이동이 취소된다.
 2. 고객이 차량을 반납지에 반납한다.
-3. 고객이 정산한다.
-4. 대리점은 반납된 차량을 회수한다.
-5. 고객은 예약 서비스를 통해 예약 상태를 중간중간 열람할 수 있어야 한다.
+3. 대리점은 반납된 차량을 회수한다.
+4. 고객은 예약 서비스를 통해 예약 상태를 중간중간 열람할 수 있어야 한다.
 
 비기능적 요구사항
 1. 트랜잭션
     1. 결제가 되지 않은 예약건은 아예 거래가 성립되지 않아야 한다 Sync 호출 
 1. 장애격리
     1. 대여관리 기능이 수행되지 않더라도 예약은 365일 24시간 받을 수 있어야 한다 Async (event-driven), Eventual Consistency
-    1. 결제시스템이 과중되면 사용자를 잠시동안 받지 않고 결제를 잠시후에 하도록 유도한다 Circuit breaker, fallback
+    1. 예약시스템이 과중되면 사용자를 잠시동안 받지 않고 예약를 잠시후에 하도록 유도한다 Circuit breaker, fallback
 1. 성능
     1. 고객이 예약상태를 예약시스템(프론트엔드)에서 확인할 수 있어야 한다 CQRS
     1. 예약상태가 바뀔때마다 카톡 등으로 알림을 줄 수 있어야 한다 Event driven
@@ -128,7 +127,7 @@
 
 ### 완성된 모형
 
-![image](https://user-images.githubusercontent.com/84000909/121767267-2583f200-cb92-11eb-9a5a-17a94032f3a2.png)
+![image](https://user-images.githubusercontent.com/82005223/122397854-4db98980-cfb4-11eb-88b0-ed9729a0d556.png)
 
 
 
@@ -139,8 +138,8 @@
 
     - 고객이 차량을 선택하여 예약한다 (ok)
     - 고객이 결제한다 (ok)
-    - 예약이 되면 내역이 대리점에 전달된다 (ok)
-    - 대리점은 예약일이 되면 차량을 대여지로 이동한다 (ok)
+    - 예약이 되면 내역이 대여점에 전달된다 (ok)
+    - 대여점은 예약일이 되면 차량을 대여지로 이동한다 (ok)
 
 
     - 고객이 예약을 취소할 수 있다 (ok)
@@ -148,8 +147,7 @@
     - 고객이 주문상태를 중간중간 조회한다 (View-green sticker 의 추가로 ok) 
     
     - 고객이 차량을 반납한다 (ok)
-    - 차량반납을 정산한다 (ok)
-    - 대리점은 반납된 차량을 회수한다 (ok) 
+    - 대여점은 반납된 차량을 회수한다 (ok) 
     
 
 
@@ -160,7 +158,7 @@
 
     - 마이크로 서비스를 넘나드는 시나리오에 대한 트랜잭션 처리
         - 고객 예약시 결제처리:  결제가 완료되지 않은 예약은 절대 받지 않는다는 경영자의 오랜 신념(?) 에 따라, ACID 트랜잭션 적용. 예약완료시 결제처리에 대해서는 Request-Response 방식 처리
-        - 결제 완료시 대리점 연결:  App(front) 에서 Store 마이크로서비스로 주문요청이 전달되는 과정에 있어서 Store 마이크로 서비스가 별도의 배포주기를 가지기 때문에 Eventual Consistency 방식으로 트랜잭션 처리함.
+        - 결제 완료시 대여점 연결:  App(front) 에서 Store 마이크로서비스로 주문요청이 전달되는 과정에 있어서 Store 마이크로 서비스가 별도의 배포주기를 가지기 때문에 Eventual Consistency 방식으로 트랜잭션 처리함.
         - 나머지 모든 inter-microservice 트랜잭션: 예약상태, 대여상태 등 모든 이벤트에 대해 카톡을 처리하는 등, 데이터 일관성의 시점이 크리티컬하지 않은 모든 경우가 대부분이라 판단, Eventual Consistency 를 기본으로 채택함.
 
 
@@ -177,7 +175,7 @@
 
 # 구현:
 
-분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트와 파이선으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 8081 ~ 808n 이다)
+분석/설계 단계에서 도출된 헥사고날 아키텍처에 따라, 각 BC별로 대변되는 마이크로 서비스들을 스프링부트으로 구현하였다. 구현한 각 서비스를 로컬에서 실행하는 방법은 아래와 같다 (각자의 포트넘버는 local port : 8081 ~ 8084 이다)
 
 ```
 cd customer
@@ -195,7 +193,7 @@ mvn spring-boot:run
 
 ## DDD 의 적용
 
-- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 pay 마이크로 서비스). 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력했다. 하지만, 일부 구현에 있어서 영문이 아닌 경우는 실행이 불가능한 경우가 있기 때문에 계속 사용할 방법은 아닌것 같다. (Maven pom.xml, Kafka의 topic id, FeignClient 의 서비스 id 등은 한글로 식별자를 사용하는 경우 오류가 발생하는 것을 확인하였다)
+- 각 서비스내에 도출된 핵심 Aggregate Root 객체를 Entity 로 선언하였다: (예시는 Payment 마이크로 서비스). 이때 가능한 현업에서 사용하는 언어 (유비쿼터스 랭귀지)를 그대로 사용하려고 노력했다. 하지만, 일부 구현에 있어서 영문이 아닌 경우는 실행이 불가능한 경우가 있기 때문에 계속 사용할 방법은 아닌것 같다. (Maven pom.xml, Kafka의 topic id, FeignClient 의 서비스 id 등은 한글로 식별자를 사용하는 경우 오류가 발생하는 것을 확인하였다)
 
 ```
 package carsharing;
@@ -309,7 +307,6 @@ public class Payment {
 
 }
 
-
 ```
 - Entity Pattern 과 Repository Pattern 을 적용하여 JPA 를 통하여 다양한 데이터소스 유형 (RDB or NoSQL) 에 대한 별도의 처리가 없도록 데이터 접근 어댑터를 자동 생성하기 위하여 Spring Data REST 의 RestRepository 를 적용하였다
 ```
@@ -358,25 +355,38 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 
 ## CQRS
 
-  - 예약 상태 확인을 위한 CQRS구현
+  - 예약 상태 확인을 위한 CQRS구현(myPages)
     http://20.194.53.119:8080/myPages
 
     ![image](https://user-images.githubusercontent.com/84000909/122336569-07463980-cf78-11eb-979e-19ab0d82c36c.png)
 
+  - 예약 상태 확인을 위한 CQRS구현(mypage 조회)
+    http://20.194.53.119:8080/mypage_action.html
+
+   ![image](https://user-images.githubusercontent.com/82005223/122396920-6ffed780-cfb3-11eb-9a69-ea06151093bc.png)
+
+
 
 ## Gateway
 
-gateway application.yml Clust Ip로 수정
+gateway application.yml 각 서비스별  rest api url 경로 추가
+![image](https://user-images.githubusercontent.com/82005223/122397340-d97ee600-cfb3-11eb-9825-133430083bdd.png)
 
-![image](https://user-images.githubusercontent.com/84000909/122333298-e5968380-cf72-11eb-93b2-9a4cd7022c26.png)
 
-빌드
+
+- 빌드
 mvn package -Dmaven.test.skip=true
 
-배포
+- Docker 이미지 생성 및 ACR 등록
 az acr build --registry user04skccacr --image user04skccacr.azurecr.io/carsharing-gateway:latest --file Dockerfile .
+
+- Deployment 배포
 kubectl create deploy gateway --image=user04skccacr.azurecr.io/carsharing-gateway:latest -n ns-carsharing
+
+- Service 배포
 kubectl expose deploy gateway --type="LoadBalancer" --port=8080 -n ns-carsharing
+
+- Service External IP 확인
 kubectl get svc -n ns-carsharing
 ![image](https://user-images.githubusercontent.com/84000909/122333701-7ec59a00-cf73-11eb-9209-f6fdde54868c.png)
 
