@@ -723,31 +723,18 @@ public class PolicyHandler{
 ![image](https://user-images.githubusercontent.com/84000909/122337932-f1d20f00-cf79-11eb-9c77-acdcf45f064b.png)
 
 
-#예약상태 확인
+#예약처리 결과
 
 ![image](https://user-images.githubusercontent.com/84000909/122337961-fb5b7700-cf79-11eb-9632-221112b2ff26.png)
 
+#예약상태 확인 : status = Reserved 이다
 ![image](https://user-images.githubusercontent.com/84000909/122338051-1c23cc80-cf7a-11eb-8489-27e331dcf01f.png)
 
 
-#Rental 서비스 기동
+#Rental POD 등록 : status = RentalAccepted 로 변경됨
 ![image](https://user-images.githubusercontent.com/84000909/122338141-3fe71280-cf7a-11eb-9c60-dd5d55844779.png)
 
 ![image](https://user-images.githubusercontent.com/84000909/122338179-4f665b80-cf7a-11eb-8d9d-3344b24e3b59.png)
-
-
-#예약상태 확인
-http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 확인
-상태가 동일함
-결재하고나면 상태를 pay완료 --> rental이 살으면 상태를 rentaccepted로 변경해야 할것 같음
-
-![image](https://user-images.githubusercontent.com/84000909/122321481-e45b5b80-cf5e-11eb-8df4-5838e4dac37a.png)
-
-![image](https://user-images.githubusercontent.com/84000909/122321455-dc9bb700-cf5e-11eb-9c2d-78b3d36e1958.png)
-
-
-
-![image](https://user-images.githubusercontent.com/84000909/122337081-c8fd4a00-cf78-11eb-9a03-517391c75f15.png)
 
 
 
