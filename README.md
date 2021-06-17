@@ -423,6 +423,9 @@ public interface 주문Repository extends JpaRepository<Order, UUID>{
 ![image](https://user-images.githubusercontent.com/84000909/122356555-df61d080-cf8d-11eb-9a2d-d860e54c5e08.png)
 
 
+##처리 결과 : 정상
+![image](https://user-images.githubusercontent.com/84000909/122358828-facddb00-cf8f-11eb-874e-b53817c2398d.png)
+
 
 
 
@@ -805,7 +808,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 # 운영
 
-## Deploy : 이미지 교체 필요함
+## Deploy
 
 - azure login 후 azure 클러스터/컨테이너 레지스트리 설정작업 진행
 ![image](https://user-images.githubusercontent.com/84000909/122336003-1f698900-cf77-11eb-842d-3db2758282ad.png)
@@ -826,7 +829,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ![image](https://user-images.githubusercontent.com/65577551/98269161-c7c27280-1fd0-11eb-8d77-55e19406c3c5.png)
 
 
-## Comfig Map
+## Config Map
 
 * Config Map을 등록함
  
