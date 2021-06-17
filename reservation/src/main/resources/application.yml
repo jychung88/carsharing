@@ -37,7 +37,7 @@ logging:
     org.springframework.cloud: debug
 server:
   port: 8081
-environments:
+env:
   payment:
      url: ${paymenturl}
 #     url: http://localhost:8083  
@@ -66,6 +66,7 @@ spring:
         event-out:
           destination: carsharing
           contentType: application/json     
-environments:
+env:
   payment:
-     url: ${paymenturl}
+     url: http://40.88.241.44:80
+#     url: ${paymenturl}
