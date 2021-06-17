@@ -813,20 +813,13 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 - azure login 후 azure 클러스터/컨테이너 레지스트리 설정작업 진행
 ![image](https://user-images.githubusercontent.com/84000909/122336003-1f698900-cf77-11eb-842d-3db2758282ad.png)
 
-- Dockerizing
-
-<패키징>
-
-![image](https://user-images.githubusercontent.com/65577551/98255440-c2f5c280-1fc0-11eb-93b0-2be4c2386939.png)
-
-<이미지 생성>
-
-![image](https://user-images.githubusercontent.com/65577551/98258841-b2474b80-1fc4-11eb-9f58-50f5fa34834a.png)
-
-
-<이미지 배포 및 서비스 생성>
-
-![image](https://user-images.githubusercontent.com/65577551/98269161-c7c27280-1fd0-11eb-8d77-55e19406c3c5.png)
+```
+mvn package -Dmaven.test.skip=true
+az acr build --registry user04skccacr --image user04skccacr.azurecr.io/carsharing-reservation:latest --file Dockerfile .
+kubectl apply -f deployment.yml -n ns-carsharing
+```
+kubelctl get all -n ns-carsharing  결과
+![image](https://user-images.githubusercontent.com/84000909/122359556-9d865980-cf90-11eb-9b56-be9227efd0c7.png)
 
 
 ## Config Map
