@@ -360,9 +360,9 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 ## CQRS
 
   - 예약 상태 확인을 위한 CQRS구현
-    http://20.194.53.119:8080/mypage_action.html
+    http://20.194.53.119:8080/myPages
 
-    ![image](https://user-images.githubusercontent.com/84000909/122336188-65bee800-cf77-11eb-9b90-31fe1202c12e.png)
+    ![image](https://user-images.githubusercontent.com/84000909/122336569-07463980-cf78-11eb-979e-19ab0d82c36c.png)
 
 
 ## Gateway
