@@ -452,7 +452,9 @@ public interface PaymentService {
 }
 ```
 
-- 예약을 받은 직후(@PostPersist) 결제를 요청하도록 처리 : PostPersist 처리시 데이터가 한건 저장이 되어 ReservationController로 구현함
+- 예약을 받은 직후 1차로 예약 정보를 저장하고, 결제서비스에 결재 요청을 하여 결재 정상이면 예약 상태를 Reserved 로, 실패하면 ReserveFailed 로 상태로 갱신한다.
+  ReservationController에서 구현함
+  예약 상태가 Reserved 일때만 이벤트가 송신되며, ReserveFailed 일때는 이벤트 송신을 하지 않는다.
 ```
 # ReservationController.java (Controller)
     
@@ -519,9 +521,35 @@ public interface PaymentService {
 
         return status + " ReserveNumber : " + reserveId;          
     }
+    
+   -- Reservation.java에서 이벤트 송시
+
+    @PostUpdate
+    public void onPostUpdate(){
+        if ("Reserved".equals(this.getReserveStatus()))
+        {
+            Reserved reserved = new Reserved();
+            BeanUtils.copyProperties(this, reserved);
+            reserved.publishAfterCommit();
+            System.out.println("##### send event : Reserved  #####");   
+        } 
+        else if ("ReserveCanceled".equals(this.getReserveStatus()))
+        {
+            ReserveCanceled reserveCanceled = new ReserveCanceled();
+            BeanUtils.copyProperties(this, reserveCanceled);
+            reserveCanceled.publishAfterCommit();
+        }               
+        else if ("ReserveReturned".equals(this.getReserveStatus()) )
+        {
+            ReserveReturned reserveReturned = new ReserveReturned();
+            BeanUtils.copyProperties(this, reserveReturned);
+            reserveReturned.publishAfterCommit();
+            System.out.println("##### send event : ReserveReturned  #####");  
+        }             
+    }    
 ```
 
-- 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 결제 시스템이 장애가 나면 주문도 못받는다는 것을 확인:
+- 동기식 호출에서는 호출 시간에 따른 타임 커플링이 발생하며, 결제 시스템이 장애가 나면 예약이 안되는 것을 확인:
 
 
 ```
@@ -567,7 +595,7 @@ public interface PaymentService {
 
 예약이 이루어진 후에 대여점으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 Rental 서비스가 장애시에도 예약/결제가 블로킹 되지 않아도록 처리한다.
  
-- 이를 위하여 예약이 되면 예약됨 도메인 이벤트를 카프카로 송출한다(Publish)
+- 이를 위하여 예약이 되면 예약됨(Reserved) 도메인 이벤트를 카프카로 송출한다(Publish)
  
  <Reservation.java>
 ```
@@ -622,10 +650,11 @@ public class Reservation {
         }             
     }
 ```
-- Rental 서비스에서는 예약됨 이벤트를 수신하여 자신의 정책을 처리하도록(RentalAccepted) PoliyHandler 를 구현한다:
- 예약정보를 DB에 RentalAccepted 상태로 저장한 후, 이후 처리는 해당 Aggregate 내에서 한다.
- <
+- Rental 서비스에서는 예약됨(Reserved) 이벤트를 수신하여 자신의 정책을 처리하도록(RentalAccepted) PoliyHandler 를 구현한다.
+ 예약정보를 DB에 RentalAccepted 상태로 저장한 후, 이후 처리는 해당 Aggregate 내에서 한다(이벤트 송출).
+ 
 ```
+ < Rental PolicyHanlder.java>
 package carsharing;
 
 import carsharing.config.kafka.KafkaProcessor;
@@ -681,63 +710,12 @@ public class PolicyHandler{
         System.out.println("reserveId : " + reserveId);             
     }
     
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReserveCanceled_CancelRental(@Payload ReserveCanceled reserveCanceled){
-
-        if(!reserveCanceled.validate()) return;
-
-        System.out.println("\n\n##### listener CancelRental : " + reserveCanceled.toJson() + "\n\n");
-
-
-        String reserveId = reserveCanceled.getId().toString();
-        Rental rental = rentalRepository.findByReserveId(reserveId);
-        if (rental != null) {
-            rental.setRentalStatus("RentalCanceled");
-            LocalDate localDate = LocalDate.now();                
-            rental.setRentCancelDate(localDate.toString());            
-            rentalRepository.save(rental); 
-
-            System.out.println("##### lental canceld by reservation cancel #####");
-            System.out.println("reserveId : " + reserveId);    
-        }
-        else{
-            System.out.println("not found reserveId : " + reserveId);    
-        }                   
-    }
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void wheneverReserveReturned_AcceptReturn(@Payload ReserveReturned reserveReturned){
-
-        if(!reserveReturned.validate()) return;
-
-        System.out.println("\n\n##### listener AcceptReturn : " + reserveReturned.toJson() + "\n\n");
-
-        String reserveId = reserveReturned.getId().toString();
-        Rental rental = rentalRepository.findByReserveId(reserveId);
-        if (rental != null) {
-            rental.setRentalStatus("ReturnAccepted");
-            LocalDate localDate = LocalDate.now();                
-            rental.setRetAcceptDate(localDate.toString());            
-            rentalRepository.save(rental); 
-
-            System.out.println("##### return accepted by reservation return #####");
-            System.out.println("reserveId : " + reserveId);    
-        }             
-        else{
-            System.out.println("not found reserveId : " + reserveId);    
-        }                   
-   }
-
-
-    @StreamListener(KafkaProcessor.INPUT)
-    public void whatever(@Payload String eventString){}
-
-
+   
 }
 
 ```
 
-렌탈 서비스는 예약/결제와 완전히 분리되어있으며, 이벤트 수신에 따라 처리되기 때문에, Rental서비스가 유지보수로 인해 잠시 내려간 상태라도 주문을 받는데 문제가 없다:
+렌탈 서비스는 예약/결제와 완전히 분리되어 있으며, 이벤트 수신에 따라 처리되기 때문에, Rental서비스가 유지보수로 인해 잠시 내려간 상태라도 예약을 받는데 문제가 없다:
 ```
 # Rental 서비스 (rental) 를 잠시 내려놓음 (ctrl+c)
 ![image](https://user-images.githubusercontent.com/84000909/122337843-d7983100-cf79-11eb-8bac-95d62352d286.png)
@@ -752,7 +730,7 @@ http localhost:8081/orders item=피자 storeId=2   #Success
 
 
 #예약상태 확인
-http localhost:8080/orders     # 주문상태 안바뀜 확인
+http localhost:8080/orders     # 예약상태 안바뀜 확인
 http://localhost:8084/mypage?reserveId=5&userPhone=
 ![image](https://user-images.githubusercontent.com/84000909/121798496-9d6d1d80-cc61-11eb-8e42-581a0745ec51.png)
 
