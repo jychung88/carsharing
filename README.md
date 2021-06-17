@@ -1049,16 +1049,42 @@ Shortest transaction:	        0.00
 ### 오토스케일 아웃
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
+Deloypment.yaml 의 설정값 적용
+![image](https://user-images.githubusercontent.com/84000909/122338737-0f53a880-cf7b-11eb-8d56-cf07a91f08be.png)
 
-- 결제서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 15프로를 넘어서면 replica 를 10개까지 늘려준다:
+ - 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
 ```
-kubectl autoscale deploy pay --min=1 --max=10 --cpu-percent=15
+kubectl autoscale deploy pay --min=1 --max=10 --cpu-percent=50
 ```
 - CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
 ```
+kubectl apply -f - <<EOF
+  apiVersion: v1
+  kind: Pod
+  metadata:
+    name: siege
+    namespace: ns-carsharing
+  spec:
+    containers:
+    - name: siege
+      image: apexacme/siege-nginx
+EOF
+
 siege -c100 -t120S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
 ```
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
+- ![image](https://user-images.githubusercontent.com/84000909/122339326-e41d8900-cf7b-11eb-9d77-49cadf242c6c.png)
+
+kubectl exec -it siege -n ns-carsharing -- /bin/bash
+![image](https://user-images.githubusercontent.com/84000909/122340681-8b4ef000-cf7d-11eb-8df2-1338c714f787.png)
+
+watch -n 1 kubectl get pod -n ns-carsharing
+
+![image](https://user-images.githubusercontent.com/84000909/122340857-c3563300-cf7d-11eb-9700-7b0f1d6e9d7a.png)
+
+- 동시 사용자 30명
+siege -c30 -t30S -v http://10.0.206.105:8080/reservations
+
 ```
 kubectl get deploy pay -w
 ```
@@ -1081,6 +1107,7 @@ Transaction rate:	       17.15 trans/sec
 Throughput:		        0.01 MB/sec
 Concurrency:		       96.02
 ```
+![image](https://user-images.githubusercontent.com/84000909/122341079-0b755580-cf7e-11eb-9f75-c0548f033594.png)
 
 
 ## 무정지 재배포
