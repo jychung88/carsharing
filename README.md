@@ -122,7 +122,7 @@
   ![image](https://user-images.githubusercontent.com/487999/79684159-3543c700-826a-11ea-8d5f-a3fc0c4cad87.png)
 
 
-## Event Storming 결과  수정
+## Event Storming 결과
 * MSAEz 로 모델링한 이벤트스토밍 결과:  http://www.msaez.io/#/storming/U0bzsSn93uN7NxmqmG8mL6n0vz53/share/1d5fca6c8eb5408a3560d9c2e51c78d7
 
 
