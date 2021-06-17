@@ -799,6 +799,8 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 GCP를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 cloudbuild.yml 에 포함되었다.
 
+## Comfig Map
+![image](https://user-images.githubusercontent.com/84000909/122322316-3fda1900-cf60-11eb-838d-895ee6df611a.png)
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
@@ -1141,5 +1143,4 @@ Request/Response 방식으로 구현하지 않았기 때문에 서비스가 더�
 ```
 
 
-컨피그맵
-![image](https://user-images.githubusercontent.com/84000909/122322316-3fda1900-cf60-11eb-838d-895ee6df611a.png)
+
