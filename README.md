@@ -362,7 +362,7 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
   - 예약 상태 확인을 위한 CQRS구현
     http://20.194.53.119:8080/mypage_action.html
 
-    ![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
+    ![image](https://user-images.githubusercontent.com/84000909/122336188-65bee800-cf77-11eb-9b90-31fe1202c12e.png)
 
 
 ## Gateway
@@ -823,7 +823,7 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 ## Deploy : 이미지 교체 필요함
 
 - azure login 후 azure 클러스터/컨테이너 레지스트리 설정작업 진행
-![image](https://user-images.githubusercontent.com/65577551/98255218-84600800-1fc0-11eb-9a32-029a02aa3c59.png)
+![image](https://user-images.githubusercontent.com/84000909/122336003-1f698900-cf77-11eb-842d-3db2758282ad.png)
 
 - Dockerizing
 
