@@ -1069,45 +1069,28 @@ EOF
 '''
 - 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
 ```
-kubectl autoscale deploy reservation --cpu-percent=50 --min=1 --max=10 -n ns-carsharing
+
 ![image](https://user-images.githubusercontent.com/84000909/122342775-f39ed100-cf7f-11eb-908e-814cf910f4f6.png)
 
 
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
-- ![image](https://user-images.githubusercontent.com/84000909/122339326-e41d8900-cf7b-11eb-9d77-49cadf242c6c.png)
-
-kubectl exec -it siege -n ns-carsharing -- /bin/bash
-![image](https://user-images.githubusercontent.com/84000909/122340681-8b4ef000-cf7d-11eb-8df2-1338c714f787.png)
 
 watch -n 1 kubectl get pod -n ns-carsharing
+![image](https://user-images.githubusercontent.com/84000909/122340681-8b4ef000-cf7d-11eb-8df2-1338c714f787.png)
+
+
+
+
 
 ![image](https://user-images.githubusercontent.com/84000909/122340857-c3563300-cf7d-11eb-9700-7b0f1d6e9d7a.png)
-
-- 동시 사용자 30명
-siege -c30 -t30S -v http://10.0.206.105:8080/reservations
 
 ```
 kubectl get deploy pay -w
 ```
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
-```
-NAME    DESIRED   CURRENT   UP-TO-DATE   AVAILABLE   AGE
-pay     1         1         1            1           17s
-pay     1         2         1            1           45s
-pay     1         4         1            1           1m
-:
-```
+- ![image](https://user-images.githubusercontent.com/84000909/122339326-e41d8900-cf7b-11eb-9d77-49cadf242c6c.png)
+
 - siege 의 로그를 보아도 전체적인 성공률이 높아진 것을 확인 할 수 있다. 
-```
-Transactions:		        5078 hits
-Availability:		       92.45 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
-Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
-Throughput:		        0.01 MB/sec
-Concurrency:		       96.02
-```
 ![image](https://user-images.githubusercontent.com/84000909/122341079-0b755580-cf7e-11eb-9f75-c0548f033594.png)
 
 
