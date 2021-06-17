@@ -889,7 +889,9 @@ vi samples/addons/kiali.yaml
 4라인의
 apiVersion: apiextensions.k8s.io/v1beta1 을
 apiVersion: apiextensions.k8s.io/v1으로 수정
-kubectl apply -f samples/addons
+kubectl apply -f samples/addons :오류가 날시는 아래의 명령어로 사용함
+kubectl apply -f https://raw.githubusercontent.com/istio/istio/release-1.7/samples/addons/kiali.yaml
+
 ```
 
 2-2. 모니터링 툴 설정
@@ -899,8 +901,11 @@ kubectl edit svc kiali -n istio-system
 :wq!
 ```
 2-3. 모니터링 시스템 접속
+![image](https://user-images.githubusercontent.com/84000909/122344535-df5bd380-cf81-11eb-9a2e-1bfb988cc3ea.png)
+![image](https://user-images.githubusercontent.com/84000909/122344703-087c6400-cf82-11eb-9aa7-d3e240e04509.png)
+
 ```
-EXTERNAL-IP:20001 (admin/admin)
+20.41.97.46:20001 (admin/admin)
 ```
 3. 네임스페이스 생성
 ```
@@ -908,12 +913,17 @@ kubectl create namespace istio-test-ns
 kubectl label namespace istio-test-ns istio-injection=enabled
 
 label에 istio-injection enabled 확인
-![image](https://user-images.githubusercontent.com/34739884/122332872-2cd04480-cf72-11eb-8372-03583810bee9.png)
+kubectl get namespace istio-test-ns -o yaml
+
 ```
+![image](https://user-images.githubusercontent.com/84000909/122345051-61e49300-cf82-11eb-9922-bab4aa353e68.png)
+
+![image](https://user-images.githubusercontent.com/34739884/122332872-2cd04480-cf72-11eb-8372-03583810bee9.png)
+
 
 4 namespace로 서비스 재배포
 ```
-kubectl create deploy gateway --image=hsh00.azurecr.io/gateway:latest -n istio-test-ns
+kubectl create deploy gateway --image=user04skccacr.azurecr.io/gateway:latest -n istio-test-ns
 kubectl expose deploy gateway --type="LoadBalancer" --port=8080 -n istio-test-ns
 나머지 동일
 ```
