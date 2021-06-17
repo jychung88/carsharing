@@ -942,12 +942,13 @@ kubectl apply -f - <<EOF
     - name: siege
       image: apexacme/siege-nginx
 EOF
-'''```
+```
 - 부하(siege) 노드 내부로 들어간다.
 kubectl exec -it siege -n ns-carsharing -- /bin/bash
 
 - 부하(siege) 노드 내부에서 부하를 발생시킨다.
 siege -c200 -t30S -v http://10.0.206.105:8080/reservations
+
 ![image](https://user-images.githubusercontent.com/84000909/122342775-f39ed100-cf7f-11eb-908e-814cf910f4f6.png)
 
 
