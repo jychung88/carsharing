@@ -568,16 +568,22 @@ public interface PaymentService {
 
 
 ```
-# 결제 (payment) 서비스를 잠시 내려놓음 (ctrl+c)
+# 결제 (payment) POD를 삭제
+![image](https://user-images.githubusercontent.com/84000909/122337244-06fa6e00-cf79-11eb-984b-a699e14fabbe.png)
+
 
 #예약처리
 - 요청
 ```
-![image](https://user-images.githubusercontent.com/84000909/121798344-af01f580-cc60-11eb-9525-bd2c1a4b8491.png)
+![image](https://user-images.githubusercontent.com/84000909/122337365-36a97600-cf79-11eb-864c-5c184daad747.png)
 ```
-- 결과
+- 결과, 이벤트 없음
 ```
-![image](https://user-images.githubusercontent.com/84000909/121798328-9e517f80-cc60-11eb-8403-0db19433d25e.png)
+![image](https://user-images.githubusercontent.com/84000909/122337403-41640b00-cf79-11eb-9261-d5a04f08b59c.png)
+![image](https://user-images.githubusercontent.com/84000909/122337453-52148100-cf79-11eb-910b-a487e6e97920.png)
+![image](https://user-images.githubusercontent.com/84000909/122337569-796b4e00-cf79-11eb-870f-aa21248c58d0.png)
+
+
 ```
 #결제서비스 재기동
 cd payment
@@ -815,6 +821,9 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 ![image](https://user-images.githubusercontent.com/84000909/122321455-dc9bb700-cf5e-11eb-9c2d-78b3d36e1958.png)
 
+
+
+![image](https://user-images.githubusercontent.com/84000909/122337081-c8fd4a00-cf78-11eb-9a03-517391c75f15.png)
 
 
 
