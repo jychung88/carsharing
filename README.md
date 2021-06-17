@@ -130,7 +130,7 @@
 
 ![image](https://user-images.githubusercontent.com/84000909/121767267-2583f200-cb92-11eb-9a5a-17a94032f3a2.png)
 
-    - View Model 추가
+
 
 ### 완성본에 대한 기능적/비기능적 요구사항을 커버하는지 검증
 
@@ -152,11 +152,7 @@
     - 대리점은 반납된 차량을 회수한다 (ok) 
     
 
-### 모델 수정 : 수정 필요내역 의견주시면 감사하겠습니다.
 
-![image](https://user-images.githubusercontent.com/487999/79684176-4e4c7800-826a-11ea-8deb-b7b053e5d7c6.png)
-    
-    - 수정된 모델은 모든 요구사항을 커버함.
 
 ### 비기능 요구사항에 대한 검증
 
