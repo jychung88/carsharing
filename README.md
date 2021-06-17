@@ -1070,10 +1070,9 @@ EOF
 - 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
 ```
 kubectl autoscale deploy reservation --cpu-percent=50 --min=1 --max=10 -n ns-carsharing
+![image](https://user-images.githubusercontent.com/84000909/122342775-f39ed100-cf7f-11eb-908e-814cf910f4f6.png)
 
-```
-siege -c100 -t120S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
-```
+
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
 - ![image](https://user-images.githubusercontent.com/84000909/122339326-e41d8900-cf7b-11eb-9d77-49cadf242c6c.png)
 
