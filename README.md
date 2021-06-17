@@ -1052,11 +1052,8 @@ Shortest transaction:	        0.00
 Deloypment.yaml 의 설정값 적용
 ![image](https://user-images.githubusercontent.com/84000909/122338737-0f53a880-cf7b-11eb-8d56-cf07a91f08be.png)
 
- - 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
-```
-kubectl autoscale deploy pay --min=1 --max=10 --cpu-percent=50
-```
-- CB 에서 했던 방식대로 워크로드를 2분 동안 걸어준다.
+ 
+- yaml파일 수정
 ```
 kubectl apply -f - <<EOF
   apiVersion: v1
@@ -1069,7 +1066,12 @@ kubectl apply -f - <<EOF
     - name: siege
       image: apexacme/siege-nginx
 EOF
+'''
+- 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
+```
+kubectl autoscale deploy reservation --cpu-percent=50 --min=1 --max=10 -n ns-carsharing
 
+```
 siege -c100 -t120S -r10 --content-type "application/json" 'http://localhost:8081/orders POST {"item": "chicken"}'
 ```
 - 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
