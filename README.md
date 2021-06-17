@@ -921,11 +921,15 @@ siege -c2 -t50S -v --content-type "application/json" 'http://20.194.98.16:8080/r
 ### 오토스케일 아웃
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
-Deloypment.yaml 의 설정값 적용
+- Reservation Deloypment.yaml 의 오토스케일을 위한 pod 초기 cpu, max cpu 설정 적용
 ![image](https://user-images.githubusercontent.com/84000909/122338737-0f53a880-cf7b-11eb-8d56-cf07a91f08be.png)
 
- 
-- yaml파일 수정
+- 예약 서비스 재배포
+  kubectl apply -f deployment.yml -n ns-carsharing
+- 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
+  kubectl autoscale deploy reservation --cpu-percent=50 --min=1 --max=10 -n ns-carsharing
+
+- 부하(siege) 배포 
 ```
 kubectl apply -f - <<EOF
   apiVersion: v1
@@ -938,14 +942,16 @@ kubectl apply -f - <<EOF
     - name: siege
       image: apexacme/siege-nginx
 EOF
-'''
-- 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
-```
+'''```
+- 부하(siege) 노드 내부로 들어간다.
+kubectl exec -it siege -n ns-carsharing -- /bin/bash
 
+- 부하(siege) 노드 내부에서 부하를 발생시킨다.
+siege -c200 -t30S -v http://10.0.206.105:8080/reservations
 ![image](https://user-images.githubusercontent.com/84000909/122342775-f39ed100-cf7f-11eb-908e-814cf910f4f6.png)
 
 
-- 오토스케일이 어떻게 되고 있는지 모니터링을 걸어둔다:
+- 오토스케일이 어떻게 되고 있는지 새로운 터미널에서 모니터링을 걸어둔다:
 
 watch -n 1 kubectl get pod -n ns-carsharing
 ![image](https://user-images.githubusercontent.com/84000909/122340681-8b4ef000-cf7d-11eb-8df2-1338c714f787.png)
@@ -956,9 +962,6 @@ watch -n 1 kubectl get pod -n ns-carsharing
 
 ![image](https://user-images.githubusercontent.com/84000909/122340857-c3563300-cf7d-11eb-9700-7b0f1d6e9d7a.png)
 
-```
-kubectl get deploy pay -w
-```
 - 어느정도 시간이 흐른 후 (약 30초) 스케일 아웃이 벌어지는 것을 확인할 수 있다:
 - ![image](https://user-images.githubusercontent.com/84000909/122339326-e41d8900-cf7b-11eb-9d77-49cadf242c6c.png)
 
