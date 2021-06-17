@@ -360,10 +360,6 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 
     ![image](https://user-images.githubusercontent.com/84000909/122336569-07463980-cf78-11eb-979e-19ab0d82c36c.png)
 
-  - 예약 상태 확인을 위한 CQRS구현(mypage 조회)
-    http://20.194.53.119:8080/mypage_action.html
-
-   ![image](https://user-images.githubusercontent.com/82005223/122396920-6ffed780-cfb3-11eb-9a69-ea06151093bc.png)
 
 
 
@@ -403,7 +399,7 @@ kubectl get svc -n ns-carsharing
 ## 폴리글랏
 
 앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 H2 DB와 HSQL DB에 부착시켰다.
-Reservatio : HSQL DB
+Reservation : HSQL DB
 나머지 Payment/rental/Customer : H2 DB
 
 ## Reservation application.yml
@@ -562,16 +558,18 @@ public interface PaymentService {
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337365-36a97600-cf79-11eb-864c-5c184daad747.png)
 ```
-- 결과, 이벤트 없음
+- 결과 : 이벤트 없음 & cadId 3번의 ReserveStatus 가 ReserveCanceled로 적용됨
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337403-41640b00-cf79-11eb-9261-d5a04f08b59c.png)
 ![image](https://user-images.githubusercontent.com/84000909/122337453-52148100-cf79-11eb-910b-a487e6e97920.png)
-![image](https://user-images.githubusercontent.com/84000909/122337569-796b4e00-cf79-11eb-870f-aa21248c58d0.png)
+![image](https://user-images.githubusercontent.com/84000909/122475348-7e72e080-cfff-11eb-9e15-2ba88de132fa.png)
 
 
 ```
 #결제서비스 POD 재배포
+```
 ![image](https://user-images.githubusercontent.com/84000909/122337767-be8f8000-cf79-11eb-877e-925717f10fcc.png)
+```
 
 #예약처리
 - 요청
