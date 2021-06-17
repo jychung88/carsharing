@@ -800,10 +800,26 @@ gateway 프로젝트 내 application.yml: 신규 서비스 8085~8087로 등록
 
 # 운영
 
-## CI/CD 설정 option
+## Deploy : 이미지 교체 필요함
+
+- azure login 후 azure 클러스터/컨테이너 레지스트리 설정작업 진행
+![image](https://user-images.githubusercontent.com/65577551/98255218-84600800-1fc0-11eb-9a32-029a02aa3c59.png)
+
+- Dockerizing
+
+<패키징>
+
+![image](https://user-images.githubusercontent.com/65577551/98255440-c2f5c280-1fc0-11eb-93b0-2be4c2386939.png)
+
+<이미지 생성>
+
+![image](https://user-images.githubusercontent.com/65577551/98258841-b2474b80-1fc4-11eb-9f58-50f5fa34834a.png)
 
 
-각 구현체들은 각자의 source repository 에 구성되었고, 사용한 CI/CD 플랫폼은 GCP를 사용하였으며, pipeline build script 는 각 프로젝트 폴더 이하에 cloudbuild.yml 에 포함되었다.
+<이미지 배포 및 서비스 생성>
+
+![image](https://user-images.githubusercontent.com/65577551/98269161-c7c27280-1fd0-11eb-8d77-55e19406c3c5.png)
+
 
 ## Comfig Map
 ![image](https://user-images.githubusercontent.com/84000909/122322316-3fda1900-cf60-11eb-838d-895ee6df611a.png)
