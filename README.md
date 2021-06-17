@@ -822,7 +822,15 @@ gateway 프로젝트 내 application.yml: 신규 서비스 8085~8087로 등록
 
 
 ## Comfig Map
+
+* Config Map을 등록함
+ 
 ![image](https://user-images.githubusercontent.com/84000909/122322316-3fda1900-cf60-11eb-838d-895ee6df611a.png)
+
+
+* 등록된 Config Map을 조회함
+ 
+![image](https://user-images.githubusercontent.com/84000909/122325689-01475d00-cf66-11eb-9d44-54d89bfb82db.png)
 
 ## 동기식 호출 / 서킷 브레이킹 / 장애격리
 
