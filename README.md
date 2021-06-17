@@ -329,39 +329,38 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 - 적용 후 REST API 의 테스트
 
   - reservation 서비스의 예약처리
-    http://localhost:8081/reserve_action.html
+    http://20.194.53.119:8080/reserve_action.html
 
-    ![image](https://user-images.githubusercontent.com/84000909/121796226-8bd04980-cc52-11eb-82c0-70d5b8d79f7c.png)
-
+    ![image](https://user-images.githubusercontent.com/84000909/122334597-f0eaae80-cf74-11eb-81c8-e69eed108473.png)
 
 
   - rental 서비스의 대여처리
-    http://localhost:8082/rental_action.html
+    http://20.194.53.119:8080/rental_action.html
 
-    ![image](https://user-images.githubusercontent.com/84000909/121796234-9db1ec80-cc52-11eb-8275-a2dcb79d60a1.png)
-
+    ![image](https://user-images.githubusercontent.com/84000909/122334637-fea03400-cf74-11eb-86f3-6bb3dbdff5bb.png)
 
 
   - reservation 서비스의 반납처리
-    http://localhost:8081/return_action.html
+    http://20.194.53.119:8080/return_action.html
 
-    ![image](https://user-images.githubusercontent.com/84000909/121796248-a9051800-cc52-11eb-8404-a22b5e506819.png)
+    ![image](https://user-images.githubusercontent.com/84000909/122334666-09f35f80-cf75-11eb-88da-53523677a7d8.png)
+    
 
   - rental 서비스의 차량회수
-    http://localhost:8082/retrieve_action.html
+    http://20.194.53.119:8080/retrieve_action.html
 
-    ![image](https://user-images.githubusercontent.com/84000909/121796262-b3271680-cc52-11eb-9e3b-037542fa1c4a.png)
+    ![image](https://user-images.githubusercontent.com/84000909/122334704-17a8e500-cf75-11eb-871e-06daa2a46b3d.png)
 
   - reservation 서비스의 예약취소
-    http://localhost:8081/cancel_action.html
+    http://20.194.53.119:8080/cancel_action.html
 
-    ![image](https://user-images.githubusercontent.com/84000909/121796270-bc17e800-cc52-11eb-845d-897b3abbab1e.png)
+    ![image](https://user-images.githubusercontent.com/84000909/122334733-22637a00-cf75-11eb-856c-8a27a3a0fd9e.png)
 
 
 ## CQRS
 
-  - 예약 상태 확인
-    http://localhost:8084/mypage_action.html
+  - 예약 상태 확인을 위한 CQRS구현
+    http://20.194.53.119:8080/mypage_action.html
 
     ![image](https://user-images.githubusercontent.com/84000909/121796282-c4702300-cc52-11eb-8f98-c6e80a9884c8.png)
 
