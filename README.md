@@ -791,6 +791,12 @@ http localhost:8080/orders     # 모든 주문의 상태가 "배송됨"으로 �
 
 ![image](https://user-images.githubusercontent.com/84000909/122321455-dc9bb700-cf5e-11eb-9c2d-78b3d36e1958.png)
 
+#gateway
+
+gateway 프로젝트 내 application.yml: 신규 서비스 8085~8087로 등록
+
+작성해야 함
+
 
 # 운영
 
