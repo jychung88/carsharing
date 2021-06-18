@@ -993,6 +993,8 @@ kubectl apply -f kubernetes/read_deployment.yaml
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
 
 
+## Readness 다시 작성
+
 ![image](https://user-images.githubusercontent.com/84000909/122497133-d7566f00-d027-11eb-97f5-e0697bac64b0.png)
 ![image](https://user-images.githubusercontent.com/84000909/122497078-c4439f00-d027-11eb-955d-ef3ec0a3481c.png)
 
@@ -1005,7 +1007,9 @@ kubectl apply -f kubernetes/read_deployment.yaml
 ![image](https://user-images.githubusercontent.com/84000909/122514324-c406cc00-d046-11eb-9543-919c5f6dfee7.png)
 ![image](https://user-images.githubusercontent.com/84000909/122514360-d4b74200-d046-11eb-8b14-48b46225cb90.png)
 
-readbess만 적용함
+```
+yaml파일 수정함
+```
 ![image](https://user-images.githubusercontent.com/84000909/122514646-38416f80-d047-11eb-8f4e-d3bd40d94607.png)
 
 
