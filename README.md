@@ -956,7 +956,7 @@ watch -n 1 kubectl get pod -n ns-carsharing
 ![image](https://user-images.githubusercontent.com/84000909/122341079-0b755580-cf7e-11eb-9f75-c0548f033594.png)
 
 
-## 무정지 재배포
+## 무정지 재배포 - Readiness & Liveness)
 
 * 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscaler 이나 CB 설정을 제거함
 
