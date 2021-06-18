@@ -962,11 +962,15 @@ siege -c60 -t60S -r10 -v http get http://reservation:8080/reservations
 ```
 kubectl apply -f live_deployment.yml -n ns-carsharing
 
+![image](https://user-images.githubusercontent.com/84000909/122495749-8e9db680-d025-11eb-81f4-833b667b76b2.png)
+
 ```
 - seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
 ![image](https://user-images.githubusercontent.com/84000909/122493763-31a10100-d023-11eb-8e92-cb0fd2a91a1c.png)
 
 ![image](https://user-images.githubusercontent.com/84000909/122493714-1df59a80-d023-11eb-9c12-b5d4c40d61b7.png)
+![image](https://user-images.githubusercontent.com/84000909/122493957-85134f00-d023-11eb-982a-b7d7a9fa0348.png)
+![image](https://user-images.githubusercontent.com/84000909/122495918-dc1a2380-d025-11eb-9b8c-27f8d5371949.png)
 
 
 배포기간중 Availability 가 평소 100%에서 39% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
@@ -975,8 +979,6 @@ kubectl apply -f live_deployment.yml -n ns-carsharing
 # deployment.yaml 의 readiness probe 의 설정:
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122496385-a3c71500-d026-11eb-9141-41f66c097049.png)
-
-![image](https://user-images.githubusercontent.com/84000909/122495749-8e9db680-d025-11eb-81f4-833b667b76b2.png)
 
 ```
 kubectl apply -f kubernetes/deployment.yaml
@@ -995,8 +997,7 @@ Concurrency:		       96.02
 
 ```
 
-![image](https://user-images.githubusercontent.com/84000909/122493957-85134f00-d023-11eb-982a-b7d7a9fa0348.png)
-![image](https://user-images.githubusercontent.com/84000909/122495918-dc1a2380-d025-11eb-9b8c-27f8d5371949.png)
+
 ![image](https://user-images.githubusercontent.com/84000909/122497078-c4439f00-d027-11eb-955d-ef3ec0a3481c.png)
 ![image](https://user-images.githubusercontent.com/84000909/122497133-d7566f00-d027-11eb-97f5-e0697bac64b0.png)
 
