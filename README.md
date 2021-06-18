@@ -723,13 +723,14 @@ public class PolicyHandler{
 #Rental 서비스 (rental)의 중지
 ![image](https://user-images.githubusercontent.com/84000909/122337843-d7983100-cf79-11eb-8bac-95d62352d286.png)
 
-#예약처리
+#예약서비스에서 예약 처리
 
 ![image](https://user-images.githubusercontent.com/84000909/122337932-f1d20f00-cf79-11eb-9c77-acdcf45f064b.png)
 
-
+```
 #예약처리 결과
-ㅡ고객 서비스에서 Reserved 확인됨
+ㅡ고객서비스에서 예약됨(Reserved) 확인됨
+```
 ![image](https://user-images.githubusercontent.com/84000909/122337961-fb5b7700-cf79-11eb-9632-221112b2ff26.png)
 
 #예약상태 확인 : status = Reserved 이다
@@ -739,7 +740,7 @@ public class PolicyHandler{
 status = RentalAccepted 로 변경됨
 ![image](https://user-images.githubusercontent.com/84000909/122338141-3fe71280-cf7a-11eb-9c60-dd5d55844779.png)
 ```
-재기동 후 MyPage결과 RentalAccepted 확인됨
+재기동 후 고객(Customer)서비스에서 e결과 RentalAccepted 확인됨
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122338179-4f665b80-cf7a-11eb-8d9d-3344b24e3b59.png)
 
