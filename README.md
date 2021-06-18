@@ -1010,7 +1010,13 @@ yaml파일 수정 및 배포 완료
 ```
 신규 버전을 배포함
 ```
-![image](https://user-images.githubusercontent.com/84000909/122515413-607d9e00-d048-11eb-8c01-d98fe4789e8d.png)
+![image](https://user-images.githubusercontent.com/84000909/122515802-ed285c00-d048-11eb-9756-2b6df549c3e1.png)
+
+
+```
+최종 결과 확인
+```
+![image](https://user-images.githubusercontent.com/84000909/122516024-34165180-d049-11eb-903c-1153e9f05b07.png)
 
 
 
