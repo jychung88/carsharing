@@ -973,9 +973,10 @@ kubectl apply -f live_deployment.yml -n ns-carsharing
 
 ```
 # deployment.yaml 의 readiness probe 의 설정:
+```
 ![image](https://user-images.githubusercontent.com/84000909/122495749-8e9db680-d025-11eb-81f4-833b667b76b2.png)
 
-
+```
 kubectl apply -f kubernetes/deployment.yaml
 ```
 
