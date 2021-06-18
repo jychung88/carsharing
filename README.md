@@ -397,7 +397,7 @@ kubectl get svc -n ns-carsharing
 
 ![image](https://user-images.githubusercontent.com/84000909/122333958-e4198b00-cf73-11eb-8baa-33d89c2ddff3.png)
 
-## 폴리글랏
+## 폴리글랏 퍼시스턴스
 
 앱프런트 (app) 는 서비스 특성상 많은 사용자의 유입과 상품 정보의 다양한 콘텐츠를 저장해야 하는 특징으로 인해 H2 DB와 HSQL DB에 부착시켰다.
 Reservation : HSQL DB
