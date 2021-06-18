@@ -773,7 +773,7 @@ kubelctl get all -n ns-carsharing  결과
 ![image](https://user-images.githubusercontent.com/84000909/122359556-9d865980-cf90-11eb-9b56-be9227efd0c7.png)
 
 
-## Config Map (Reservation 패포전에 선배포)
+## Config Map (Reservation 배포전에 선배포)
 
 * Config Map을 환경변수 등록함
 kubectl create configmap cm-carsharing --namespace="ns-carsharing" --from-literal=DB_IP=10.20.30.1 --from-literal=DB_SERVICE_NAME=CARS
@@ -787,7 +787,7 @@ kubectl get cm -n ns-carsharing
  
 ![image](https://user-images.githubusercontent.com/84000909/122325689-01475d00-cf66-11eb-9d44-54d89bfb82db.png)
 
-## 서킷 브레이커 : 장애격리(결재시스템 장애 발생시)
+## 서킷 브레이커 : 장애격리(예약 시스템 장애 발생시)
 
 1. Istio 설치
 ```
@@ -897,12 +897,14 @@ siege -c2 -t50S -v --content-type "application/json" 'http://20.194.98.16:8080/r
 
 6.모니터링 시스템 (kiali)에서 확인
 ![image](https://user-images.githubusercontent.com/34739884/122333511-41610c80-cf73-11eb-8cf8-47b16dd2941b.png)
+![image](https://user-images.githubusercontent.com/84000909/122505691-d3cae400-d037-11eb-8dc6-ccd7212efd0a.png)
+
 
 운영시스템은 죽지 않고 지속적으로 CB 에 의하여 적절히 회로가 열림과 닫힘이 벌어지면서 자원을 보호하고 있음을 보여줌. 하지만, 62.45% 가 성공하였고, 37%가 실패했다는 것은 고객 사용성에 있어 좋지 않기 때문에 Retry 설정과 동적 Scale out (replica의 자동적 추가,HPA) 을 통하여 시스템을 확장 해주는 후속처리가 필요.
 
 
 
-### 오토스케일 아웃
+### 오토스케일
 앞서 CB 는 시스템을 안정되게 운영할 수 있게 해줬지만 사용자의 요청을 100% 받아들여주지 못했기 때문에 이에 대한 보완책으로 자동화된 확장 기능을 적용하고자 한다. 
 
 - Reservation Deloypment.yaml 의 오토스케일을 위한 pod 초기 cpu, max cpu 설정 적용
@@ -910,7 +912,7 @@ siege -c2 -t50S -v --content-type "application/json" 'http://20.194.98.16:8080/r
 
 - 예약 서비스 재배포
   kubectl apply -f deployment.yml -n ns-carsharing
-- 에약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
+- 예약서비스에 대한 replica 를 동적으로 늘려주도록 HPA 를 설정한다. 설정은 CPU 사용량이 50프로를 넘어서면 replica 를 10개까지 늘려준다:
   kubectl autoscale deploy reservation --cpu-percent=50 --min=1 --max=10 -n ns-carsharing
 
 - 부하(siege) 배포 
