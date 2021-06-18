@@ -995,23 +995,10 @@ kubectl apply -f kubernetes/read_deployment.yaml
 
 ## Readness 다시 작성
 
-![image](https://user-images.githubusercontent.com/84000909/122497133-d7566f00-d027-11eb-97f5-e0697bac64b0.png)
-![image](https://user-images.githubusercontent.com/84000909/122497078-c4439f00-d027-11eb-955d-ef3ec0a3481c.png)
-
-[readmess 다시]
-![image](https://user-images.githubusercontent.com/84000909/122513606-94a38f80-d045-11eb-86f9-153aab2013bf.png)
-수정함
-![image](https://user-images.githubusercontent.com/84000909/122513733-c1f03d80-d045-11eb-9de8-448a52bc737f.png)
-
-재빌드 & 배포
-![image](https://user-images.githubusercontent.com/84000909/122514324-c406cc00-d046-11eb-9543-919c5f6dfee7.png)
-![image](https://user-images.githubusercontent.com/84000909/122514360-d4b74200-d046-11eb-8b14-48b46225cb90.png)
-
 ```
 yaml파일 수정 및 배포 완료
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122514646-38416f80-d047-11eb-8f4e-d3bd40d94607.png)
-
 
 
 ```
@@ -1023,6 +1010,7 @@ yaml파일 수정 및 배포 완료
 ```
 신규 버전을 배포함
 ```
+![image](https://user-images.githubusercontent.com/84000909/122515413-607d9e00-d048-11eb-8c01-d98fe4789e8d.png)
 
 
 
