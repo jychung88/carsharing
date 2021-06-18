@@ -740,7 +740,7 @@ public class PolicyHandler{
 status = RentalAccepted 로 변경됨
 ![image](https://user-images.githubusercontent.com/84000909/122338141-3fe71280-cf7a-11eb-9c60-dd5d55844779.png)
 ```
-재기동 후 고객(Customer)서비스에서 e결과 RentalAccepted 확인됨
+재기동 후 고객(Customer)서비스에서 결과 RentalAccepted 확인됨
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122338179-4f665b80-cf7a-11eb-8d9d-3344b24e3b59.png)
 
@@ -748,7 +748,7 @@ status = RentalAccepted 로 변경됨
 
 # 운영
 
-## Deploy
+## Deploy : Gateway는 모든 서비스 배포 후에 빌드후 배포해야 함
 
 - azure login 후 azure 클러스터/컨테이너 레지스트리 설정작업 진행
 ![image](https://user-images.githubusercontent.com/84000909/122336003-1f698900-cf77-11eb-842d-3db2758282ad.png)
@@ -758,7 +758,7 @@ status = RentalAccepted 로 변경됨
   서비스 소스 폴더로 이동(Reservation)
   mvn package -Dmaven.test.skip=true
 
-- 도커이미지 생성 및 RCR에 등록
+- 도커이미지 생성 및 ACR에 등록
 az acr build --registry user04skccacr --image user04skccacr.azurecr.io/carsharing-reservation:latest --file Dockerfile .
   
 - Deployment 배포 
@@ -773,7 +773,7 @@ kubelctl get all -n ns-carsharing  결과
 ![image](https://user-images.githubusercontent.com/84000909/122359556-9d865980-cf90-11eb-9b56-be9227efd0c7.png)
 
 
-## Config Map
+## Config Map (Reservation 패포전에 선배포)
 
 * Config Map을 환경변수 등록함
 kubectl create configmap cm-carsharing --namespace="ns-carsharing" --from-literal=DB_IP=10.20.30.1 --from-literal=DB_SERVICE_NAME=CARS
