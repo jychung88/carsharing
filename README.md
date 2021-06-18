@@ -996,6 +996,11 @@ kubectl apply -f kubernetes/read_deployment.yaml
 ![image](https://user-images.githubusercontent.com/84000909/122497133-d7566f00-d027-11eb-97f5-e0697bac64b0.png)
 ![image](https://user-images.githubusercontent.com/84000909/122497078-c4439f00-d027-11eb-955d-ef3ec0a3481c.png)
 
+[다시]
+![image](https://user-images.githubusercontent.com/84000909/122513606-94a38f80-d045-11eb-86f9-153aab2013bf.png)
+수정함
+![image](https://user-images.githubusercontent.com/84000909/122513733-c1f03d80-d045-11eb-9de8-448a52bc737f.png)
+
 
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
@@ -1004,6 +1009,7 @@ kubectl apply -f kubernetes/read_deployment.yaml
 # 신규 개발 조직의 추가 -- 이하 개인과제로 금번 조별 과제에서는 대상이 아니며, 개인과제 대비하여 문서는 남겨 놓음
 
   ![image](https://user-images.githubusercontent.com/487999/79684133-1d6c4300-826a-11ea-94a2-602e61814ebf.png)
+
 
 
 ## 마케팅팀의 추가
