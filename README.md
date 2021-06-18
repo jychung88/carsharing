@@ -550,7 +550,7 @@ public interface PaymentService {
 
 
 ```
-# 결제 (Payment) POD를 임시로 삭제
+# 결제 (Payment) 서비스 중지
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337244-06fa6e00-cf79-11eb-984b-a699e14fabbe.png)
 
@@ -571,7 +571,7 @@ public interface PaymentService {
 
 
 ```
-#결제서비스 POD 재배포
+#결제서비스 
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337767-be8f8000-cf79-11eb-877e-925717f10fcc.png)
 ```
@@ -593,7 +593,7 @@ public interface PaymentService {
 
 
 
-## 비동기식 호출 / 시간적 디커플링 / 장애격리 / 최종 (Eventual) 일관성 테스트
+## 비동기식 호출  테스트
 
 
 예약이 이루어진 후에 대여점으로 이를 알려주는 행위는 동기식이 아니라 비 동기식으로 처리하여 Rental 서비스가 장애시에도 예약/결제가 블로킹 되지 않아도록 처리한다.
@@ -720,7 +720,7 @@ public class PolicyHandler{
 
 렌탈 서비스는 예약/결제와 완전히 분리되어 있으며, 이벤트 수신에 따라 처리되기 때문에, Rental서비스가 유지보수로 인해 잠시 내려간 상태라도 예약을 받는데 문제가 없다:
 
-#Rental 서비스 (rental)의 POD를 잠시 삭제함
+#Rental 서비스 (rental)의 중지
 ![image](https://user-images.githubusercontent.com/84000909/122337843-d7983100-cf79-11eb-8bac-95d62352d286.png)
 
 #예약처리
@@ -729,16 +729,18 @@ public class PolicyHandler{
 
 
 #예약처리 결과
-
+ㅡ고객 서비스에서 Reserved 확인됨
 ![image](https://user-images.githubusercontent.com/84000909/122337961-fb5b7700-cf79-11eb-9632-221112b2ff26.png)
 
 #예약상태 확인 : status = Reserved 이다
 ![image](https://user-images.githubusercontent.com/84000909/122338051-1c23cc80-cf7a-11eb-8489-27e331dcf01f.png)
 
-
-#Rental POD 등록 : status = RentalAccepted 로 변경됨
+## Rental 재기동
+status = RentalAccepted 로 변경됨
 ![image](https://user-images.githubusercontent.com/84000909/122338141-3fe71280-cf7a-11eb-9c60-dd5d55844779.png)
-
+```
+재기동 후 MyPage결과 RentalAccepted 확인됨
+```
 ![image](https://user-images.githubusercontent.com/84000909/122338179-4f665b80-cf7a-11eb-8d9d-3344b24e3b59.png)
 
 
