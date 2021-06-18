@@ -980,7 +980,7 @@ kubectl apply -f live_deployment.yml -n ns-carsharing
 ![image](https://user-images.githubusercontent.com/84000909/122496385-a3c71500-d026-11eb-9141-41f66c097049.png)
 
 ```
-kubectl apply -f kubernetes/deployment.yaml
+kubectl apply -f kubernetes/read_deployment.yaml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
