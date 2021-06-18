@@ -324,7 +324,7 @@ public interface PaymentRepository extends PagingAndSortingRepository<Payment, L
 }
 
 ```
-- 적용 후 REST API 의 테스트
+- 적용 후 REST API 의 테스트 : 서비스 재가동 하여 IP가 변경됨 20.194.53.119 ==> http://20.194.60.72/
 
   - reservation 서비스의 예약처리
     http://20.194.53.119:8080/reserve_action.html
