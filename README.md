@@ -1008,9 +1008,22 @@ kubectl apply -f kubernetes/read_deployment.yaml
 ![image](https://user-images.githubusercontent.com/84000909/122514360-d4b74200-d046-11eb-8b14-48b46225cb90.png)
 
 ```
-yaml파일 수정함
+yaml파일 수정 및 배포 완료
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122514646-38416f80-d047-11eb-8f4e-d3bd40d94607.png)
+
+
+
+```
+상태 확인을 위해 소스를 재 빌드함
+```
+![image](https://user-images.githubusercontent.com/84000909/122515117-ee0cbe00-d047-11eb-91a2-bc6c9bb76be1.png)
+![image](https://user-images.githubusercontent.com/84000909/122515208-11376d80-d048-11eb-9d66-527bee6022c7.png)
+
+```
+신규 버전을 배포함
+```
+
 
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
