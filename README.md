@@ -956,11 +956,11 @@ watch -n 1 kubectl get pod -n ns-carsharing
 ![image](https://user-images.githubusercontent.com/84000909/122341079-0b755580-cf7e-11eb-9f75-c0548f033594.png)
 
 
-## 무정지 재배포 - Readiness & Liveness)
+## 무정지 재배포 - ( Liveness & Readiness )
 
 * 먼저 무정지 재배포가 100% 되는 것인지 확인하기 위해서 Autoscaler 이나 CB 설정을 제거함
 
-- seige 로 배포작업 직전에 워크로드를 모니터링 함.
+- seige 로 배포작업 직전에 모니터링 함.
 ```
 siege -c60 -t60S -r10 -v http get http://reservation:8080/reservations
 ```
@@ -991,21 +991,11 @@ kubectl apply -f kubernetes/read_deployment.yaml
 ```
 
 - 동일한 시나리오로 재배포 한 후 Availability 확인:
-```
-Transactions:		        3078 hits
-Availability:		       100 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
-Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
-Throughput:		        0.01 MB/sec
-Concurrency:		       96.02
-
-```
 
 
-![image](https://user-images.githubusercontent.com/84000909/122497078-c4439f00-d027-11eb-955d-ef3ec0a3481c.png)
 ![image](https://user-images.githubusercontent.com/84000909/122497133-d7566f00-d027-11eb-97f5-e0697bac64b0.png)
+![image](https://user-images.githubusercontent.com/84000909/122497078-c4439f00-d027-11eb-955d-ef3ec0a3481c.png)
+
 
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
