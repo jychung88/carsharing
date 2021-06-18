@@ -971,21 +971,15 @@ HTTP/1.1 201     0.70 secs:     207 bytes ==> POST http://localhost:8081/orders
 
 - 새버전으로의 배포 시작
 ```
-kubectl set image ...
-```
+kubectl apply -f live_deployment.yml -n ns-carsharing
 
+```
 - seige 의 화면으로 넘어가서 Availability 가 100% 미만으로 떨어졌는지 확인
-```
-Transactions:		        3078 hits
-Availability:		       70.45 %
-Elapsed time:		       120 secs
-Data transferred:	        0.34 MB
-Response time:		        5.60 secs
-Transaction rate:	       17.15 trans/sec
-Throughput:		        0.01 MB/sec
-Concurrency:		       96.02
+![image](https://user-images.githubusercontent.com/84000909/122493763-31a10100-d023-11eb-8e92-cb0fd2a91a1c.png)
 
-```
+![image](https://user-images.githubusercontent.com/84000909/122493714-1df59a80-d023-11eb-9c12-b5d4c40d61b7.png)
+
+
 배포기간중 Availability 가 평소 100%에서 70% 대로 떨어지는 것을 확인. 원인은 쿠버네티스가 성급하게 새로 올려진 서비스를 READY 상태로 인식하여 서비스 유입을 진행한 것이기 때문. 이를 막기위해 Readiness Probe 를 설정함:
 
 ```
@@ -1007,6 +1001,9 @@ Throughput:		        0.01 MB/sec
 Concurrency:		       96.02
 
 ```
+
+![image](https://user-images.githubusercontent.com/84000909/122493957-85134f00-d023-11eb-982a-b7d7a9fa0348.png)
+
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
 
