@@ -403,7 +403,7 @@ kubectl get svc -n ns-carsharing
 Reservation : HSQL DB
 나머지 Payment/rental/Customer : H2 DB
 
-## Reservation application.yml
+## Reservation pom.xml
 
 ![image](https://user-images.githubusercontent.com/84000909/122356555-df61d080-cf8d-11eb-9a2d-d860e54c5e08.png)
 
