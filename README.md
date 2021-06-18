@@ -1018,6 +1018,7 @@ yaml파일 수정 및 배포 완료
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122516024-34165180-d049-11eb-903c-1153e9f05b07.png)
 
+![image](https://user-images.githubusercontent.com/84000909/122516096-4abca880-d049-11eb-933c-2c25a85590b1.png)
 
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
