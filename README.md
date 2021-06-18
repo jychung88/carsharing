@@ -973,6 +973,7 @@ kubectl apply -f live_deployment.yml -n ns-carsharing
 
 ```
 # deployment.yaml 의 readiness probe 의 설정:
+![image](https://user-images.githubusercontent.com/84000909/122495749-8e9db680-d025-11eb-81f4-833b667b76b2.png)
 
 
 kubectl apply -f kubernetes/deployment.yaml
@@ -992,6 +993,7 @@ Concurrency:		       96.02
 ```
 
 ![image](https://user-images.githubusercontent.com/84000909/122493957-85134f00-d023-11eb-982a-b7d7a9fa0348.png)
+![image](https://user-images.githubusercontent.com/84000909/122495918-dc1a2380-d025-11eb-9b8c-27f8d5371949.png)
 
 
 배포기간 동안 Availability 가 변화없기 때문에 무정지 재배포가 성공한 것으로 확인됨.
