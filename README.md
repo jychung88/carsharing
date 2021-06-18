@@ -563,7 +563,9 @@ public interface PaymentService {
 - 결과 : 이벤트 없음 & cadId 3번의 ReserveStatus 가 ReserveFailed로 적용됨
 ```
 ![image](https://user-images.githubusercontent.com/84000909/122337403-41640b00-cf79-11eb-9261-d5a04f08b59c.png)
+```
 이벤트 발생 안됨
+```
 ![image](https://user-images.githubusercontent.com/84000909/122337453-52148100-cf79-11eb-910b-a487e6e97920.png)
 ![image](https://user-images.githubusercontent.com/84000909/122475348-7e72e080-cfff-11eb-9e15-2ba88de132fa.png)
 
