@@ -42,26 +42,29 @@ public class Rental {
 
     @PostUpdate
     public void onPostUpdate(){
+        /*
         if ("Rentaled".equals(this.getRentalStatus())) {        
             Rentaled rentaled = new Rentaled();
             BeanUtils.copyProperties(this, rentaled);
             rentaled.publishAfterCommit();
         }
-        else if ("RentalCanceled".equals(this.getRentalStatus())) {        
+        else */
+        if ("RentalCanceled".equals(this.getRentalStatus())) {        
             RentalCanceled rentalCanceled = new RentalCanceled();
             BeanUtils.copyProperties(this, rentalCanceled);
             rentalCanceled.publishAfterCommit(); 
-        }
+        }        
+        else if ("ReturnAccepted".equals(this.getRentalStatus())) {  
+            ReturnAccepted returnAccepted = new ReturnAccepted();
+            BeanUtils.copyProperties(this, returnAccepted);
+            returnAccepted.publishAfterCommit();
+        }/*
         else if ("RentalRetrieved".equals(this.getRentalStatus())) {  
             RentalRetrieved rentalRetrieved = new RentalRetrieved();
             BeanUtils.copyProperties(this, rentalRetrieved);
             rentalRetrieved.publishAfterCommit();
         }
-        else if ("ReturnAccepted".equals(this.getRentalStatus())) {  
-            ReturnAccepted returnAccepted = new ReturnAccepted();
-            BeanUtils.copyProperties(this, returnAccepted);
-            returnAccepted.publishAfterCommit();
-        }
+        */
     }
 
 

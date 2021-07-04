@@ -26,6 +26,7 @@ public class MyPage {
         private String payCancelDate;
         private String status;
         private String userPhone;
+        private String mileage;
 
 
         public Long getId() {
@@ -122,7 +123,7 @@ public class MyPage {
         public String getRentRetrieveDate() {
             return rentRetrieveDate;
         }
-    
+
         public void setRentRetrieveDate(String rentRetrieveDate) {
             this.rentRetrieveDate = rentRetrieveDate;
         }
@@ -140,12 +141,19 @@ public class MyPage {
         public void setStatus(String status) {
             this.status = status;
         }
-        
         public String getUserPhone() {
             return userPhone;
         }
-    
+
         public void setUserPhone(String userPhone) {
             this.userPhone = userPhone;
         }
+        public String getMileage() {
+            return mileage;
+        }
+
+        public void setMileage(String mileage) {
+            this.mileage = mileage;
+        }
+
 }

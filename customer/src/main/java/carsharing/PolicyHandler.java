@@ -196,6 +196,7 @@ public class PolicyHandler{
         } 
             
     }
+    /*
     @StreamListener(KafkaProcessor.INPUT)
     public void wheneverReturnAccepted_ChangeStatus(@Payload ReturnAccepted returnAccepted){
 
@@ -217,6 +218,76 @@ public class PolicyHandler{
             System.out.println("not found reserveId : " + reserveId);    
         } 
             
+    }
+    */
+    //추가
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverDeliveryStarted_ChangeStatus(@Payload DeliveryStarted deliveryStarted){
+
+        if(!deliveryStarted.validate()) return;
+        // Get Methods
+        String reserveId = deliveryStarted.getReserveId();
+        Customer customer = customerRepository.findByReserveId(reserveId);
+        if (customer != null) {
+            customer.setStatus("DeliveryStarted");             
+            //customer.setRetAcceptDate(returnAccepted.getRetAcceptDate());            
+            customerRepository.save(customer); 
+
+            System.out.println("##### rental status changed by 'deliveryStarted' #####");
+            System.out.println("reserveId : " + reserveId); 
+        }          
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        } 
+
+
+        // Sample Logic //
+        //System.out.println("\n\n##### listener ChangeStatus : " + deliveryStarted.toJson() + "\n\n");
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverDeliveryCanceled_ChangeStatus(@Payload DeliveryCanceled deliveryCanceled){
+
+        if(!deliveryCanceled.validate()) return;
+        // Get Methods
+        String reserveId = deliveryCanceled.getReserveId();
+        Customer customer = customerRepository.findByReserveId(reserveId);
+        if (customer != null) {
+            customer.setStatus("DeliveryCancled");             
+            //customer.setRetAcceptDate(returnAccepted.getRetAcceptDate());            
+            customerRepository.save(customer); 
+
+            System.out.println("##### rental status changed by 'deliveryCanceled' #####");
+            System.out.println("reserveId : " + reserveId); 
+        }          
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        } 
+
+        // Sample Logic //
+        //System.out.println("\n\n##### listener ChangeStatus : " + deliveryCanceled.toJson() + "\n\n");
+    }
+    @StreamListener(KafkaProcessor.INPUT)
+    public void wheneverMileageAccepted_ChangeStatus(@Payload MileageAccepted mileageAccepted){
+
+        if(!mileageAccepted.validate()) return;
+        // Get Methods
+        String reserveId = mileageAccepted.getReserveId();
+        Customer customer = customerRepository.findByReserveId(reserveId);
+        if (customer != null) {
+            customer.setMileage("Mileaged");
+            customer.setStatus("AllDone");             
+            //customer.setRetAcceptDate(returnAccepted.getRetAcceptDate());            
+            customerRepository.save(customer); 
+
+            System.out.println("##### rental status changed by 'Mileaged' #####");
+            System.out.println("reserveId : " + reserveId); 
+        }          
+        else{
+            System.out.println("not found reserveId : " + reserveId);    
+        } 
+
+        // Sample Logic //
+        //System.out.println("\n\n##### listener ChangeStatus : " + mileageAccepted.toJson() + "\n\n");
     }
 
     @StreamListener(KafkaProcessor.INPUT)

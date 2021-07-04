@@ -63,6 +63,7 @@ import java.util.List;
                 String retAcceptDate = myPage.getRetAcceptDate();
                 String retRetrieveDate = myPage.getRentRetrieveDate();
                 String payCancelDate = myPage.getPayCancelDate();
+                String mileageStr =myPage.getMileage();
 
                 writer.write(i + " : ");
                 writer.write("reserve Number=" + reserveId);
@@ -97,6 +98,9 @@ import java.util.List;
                 if (payCancelDate != null) {
                     writer.write(",payCancelDate=" + payCancelDate);
                 }
+                writer.write(",mileage=" + mileageStr);
+                
+
                 writer.write("\r\n");
             }
         }   

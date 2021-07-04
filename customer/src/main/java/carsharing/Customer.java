@@ -29,6 +29,7 @@ public class Customer {
     private String payCancelDate;
     private String status;
     private String userPhone;
+    private String mileage;
 
     @PostPersist
     public void onPostPersist(){
@@ -175,6 +176,12 @@ public class Customer {
     public void setUserPhone(String userPhone) {
         this.userPhone = userPhone;
     }
+    public String getMileage() {
+        return mileage;
+    }
 
-
+    public void setMileage(String mileage) {
+        this.mileage = mileage;
+    }
+    
 }
